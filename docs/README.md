@@ -8,6 +8,7 @@ Welcome to the MedSecureAI documentation! This directory contains detailed guide
 - **[README.md](../README.md)** - Main project overview and quick start guide
 - **[AI_SETUP_GUIDE.md](AI_SETUP_GUIDE.md)** - Comprehensive AI provider setup instructions
 - **[AUTH0_SETUP.md](AUTH0_SETUP.md)** - Detailed Auth0 for AI Agents configuration
+- **[AUTH0_ADVANCED_FEATURES.md](AUTH0_ADVANCED_FEATURES.md)** - 🏆 Advanced Auth0 AI features analysis and implementation roadmap
 
 ### 🔧 Setup & Configuration  
 - **[INSTRUCTIONS.md](INSTRUCTIONS.md)** - Step-by-step project setup instructions
@@ -21,8 +22,9 @@ Welcome to the MedSecureAI documentation! This directory contains detailed guide
 
 ### For Judges (Auth0 Challenge)
 1. Start with **[README.md](../README.md)** for project overview
-2. Check **[DEMO_READY.md](DEMO_READY.md)** for submission details
-3. Follow **[AUTH0_SETUP.md](AUTH0_SETUP.md)** for Auth0 integration review
+2. **⭐ [AUTH0_ADVANCED_FEATURES.md](AUTH0_ADVANCED_FEATURES.md)** - Advanced features analysis (MUST READ!)
+3. Check **[DEMO_READY.md](DEMO_READY.md)** for submission details
+4. Follow **[AUTH0_SETUP.md](AUTH0_SETUP.md)** for Auth0 integration review
 
 ### For Developers
 1. Read **[README.md](../README.md)** for project structure
