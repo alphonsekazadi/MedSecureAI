@@ -1,0 +1,35 @@
+import { Auth0Provider } from '@auth0/auth0-react';
+import { ReactNode } from 'react';
+
+interface Auth0ProviderWrapperProps {
+  children: ReactNode;
+}
+
+const Auth0ProviderWrapper = ({ children }: Auth0ProviderWrapperProps) => {
+  const domain = import.meta.env.VITE_AUTH0_DOMAIN;
+  const clientId = import.meta.env.VITE_AUTH0_CLIENT_ID;
+  const audience = import.meta.env.VITE_AUTH0_AUDIENCE;
+  const redirectUri = import.meta.env.VITE_AUTH0_REDIRECT_URI || window.location.origin;
+
+  if (!domain || !clientId) {
+    throw new Error('Auth0 domain and client ID are required');
+  }
+
+  return (
+    <Auth0Provider
+      domain={domain}
+      clientId={clientId}
+      authorizationParams={{
+        redirect_uri: redirectUri,
+        audience: audience,
+        scope: "openid profile email read:health_data write:health_data"
+      }}
+      useRefreshTokens={true}
+      cacheLocation="localstorage"
+    >
+      {children}
+    </Auth0Provider>
+  );
+};
+
+export default Auth0ProviderWrapper;
