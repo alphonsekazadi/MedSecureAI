@@ -1,4 +1,5 @@
 import { useAuth } from '../hooks/useAuth';
+import Auth0AIFeatures from './Auth0AIFeatures';
 
 const DoctorDashboard = () => {
   const { user, logout } = useAuth();
@@ -93,6 +94,11 @@ const DoctorDashboard = () => {
               </button>
             </div>
           </div>
+        </div>
+
+        {/* Auth0 for AI Agents Features Section */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <Auth0AIFeatures />
         </div>
       </div>
     </div>

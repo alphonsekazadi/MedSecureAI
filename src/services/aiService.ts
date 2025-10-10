@@ -1,6 +1,8 @@
 // AI Service for MedSecureAI - Supports Multiple Providers
 import Groq from 'groq-sdk';
 import { HfInference } from '@huggingface/inference';
+import { auth0AIService } from './auth0AIService';
+import { advancedMedicalTools } from './advancedMedicalTools';
 
 // AI Provider Types
 export type AIProvider = 'groq' | 'huggingface' | 'openai' | 'mock';
@@ -392,6 +394,70 @@ MedSecureAI:`;
       available,
       model: import.meta.env.VITE_AI_MODEL || 'default'
     };
+  }
+
+  // Enhanced medical tools integration with Auth0 AI features
+  public getAdvancedMedicalTools() {
+    if (auth0AIService.isTokenVaultEnabled() || 
+        auth0AIService.isAsyncAuthEnabled() || 
+        auth0AIService.isFGAEnabled()) {
+      return advancedMedicalTools;
+    }
+    return [];
+  }
+
+  // Check if advanced Auth0 AI features are available
+  public getAuth0AIFeatureStatus() {
+    return {
+      tokenVault: auth0AIService.isTokenVaultEnabled(),
+      asyncAuth: auth0AIService.isAsyncAuthEnabled(),
+      fga: auth0AIService.isFGAEnabled(),
+      availableFeatures: auth0AIService.getAvailableFeatures()
+    };
+  }
+
+  // Enhanced suggestion system with Auth0 AI features
+  private getEnhancedSuggestions(userMessage: string = ''): string[] {
+    const message = userMessage.toLowerCase();
+    const suggestions: string[] = [];
+    
+    // Advanced Auth0 AI feature suggestions
+    if (message.includes('appointment') || message.includes('schedule') || message.includes('calendar')) {
+      if (auth0AIService.isTokenVaultEnabled()) {
+        suggestions.push('📅 View Google Calendar appointments (Token Vault)');
+        suggestions.push('📅 Schedule appointment (Async Authorization)');
+      }
+    }
+    
+    if (message.includes('record') || message.includes('medical') || message.includes('history')) {
+      if (auth0AIService.isFGAEnabled()) {
+        suggestions.push('🏥 Access medical records (Fine-Grained Auth)');
+        suggestions.push('🔒 View authorized patient data');
+      }
+    }
+    
+    if (message.includes('medication') || message.includes('prescription') || message.includes('drug')) {
+      if (auth0AIService.isAsyncAuthEnabled()) {
+        suggestions.push('💊 Request prescription (Doctor Approval Required)');
+        suggestions.push('💊 Check drug interactions');
+      }
+    }
+    
+    if (message.includes('emergency') || message.includes('urgent')) {
+      suggestions.push('🚨 Emergency medical alert');
+      suggestions.push('📞 Contact emergency services');
+    }
+    
+    // Fallback to basic suggestions if no advanced features match
+    if (suggestions.length === 0) {
+      const availableFeatures = auth0AIService.getAvailableFeatures();
+      if (availableFeatures.length > 0) {
+        suggestions.push(`🔒 Advanced Auth0 AI features: ${availableFeatures.join(', ')}`);
+      }
+      suggestions.push(...this.generateSuggestedActions(userMessage));
+    }
+    
+    return suggestions.slice(0, 3);
   }
 }
 
