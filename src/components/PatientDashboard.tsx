@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useAuth } from '../hooks/useAuth';
+import SecureAIChat from './SecureAIChat';
 
 const PatientDashboard = () => {
   const { user, logout } = useAuth();
@@ -159,30 +160,7 @@ const PatientDashboard = () => {
         )}
 
         {activeTab === 'chat' && (
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200">
-            <div className="p-6">
-              <div className="text-center py-12">
-                <div className="h-16 w-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <svg className="h-8 w-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-                  </svg>
-                </div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-2">AI Health Assistant</h3>
-                <p className="text-gray-600 mb-6">
-                  Chat with our secure AI assistant for health insights and medical guidance
-                </p>
-                <button className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors duration-200">
-                  Start Secure Chat
-                </button>
-                <div className="mt-4 flex items-center justify-center space-x-2 text-sm text-gray-500">
-                  <svg className="h-4 w-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd" />
-                  </svg>
-                  <span>End-to-end encrypted • HIPAA compliant</span>
-                </div>
-              </div>
-            </div>
-          </div>
+          <SecureAIChat />
         )}
 
         {activeTab === 'records' && (
