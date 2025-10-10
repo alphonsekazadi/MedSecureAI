@@ -230,6 +230,16 @@ Update Auth0 configuration for production domains:
 - Allowed Callback URLs: `https://your-domain.com`
 - Allowed Web Origins: `https://your-domain.com`
 
+## 📚 Documentation
+
+Comprehensive documentation is available in the [`docs/`](docs/) directory:
+
+- **[AI Setup Guide](docs/AI_SETUP_GUIDE.md)** - Detailed AI provider configuration
+- **[Auth0 Setup](docs/AUTH0_SETUP.md)** - Complete Auth0 integration guide  
+- **[Quick Fix Guide](docs/QUICK_FIX.md)** - Common issues and solutions
+- **[Demo Ready](docs/DEMO_READY.md)** - Auth0 Challenge submission checklist
+- **[Setup Instructions](docs/INSTRUCTIONS.md)** - Step-by-step project setup
+
 ## 🤝 Contributing
 
 1. Fork the repository
@@ -237,6 +247,8 @@ Update Auth0 configuration for production domains:
 3. Commit changes (`git commit -m 'Add medical feature'`)
 4. Push to branch (`git push origin feature/medical-feature`)  
 5. Open Pull Request
+
+See [contributing guidelines](docs/INSTRUCTIONS.md) for detailed development setup.
 
 ## 📄 License
 
