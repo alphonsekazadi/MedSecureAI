@@ -207,6 +207,17 @@ ${result}
         </p>
       </div>
 
+      {/* Auth0 Professional Role Management */}
+      <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+        <h3 className="text-sm font-semibold text-blue-800 mb-2">
+          🏆 Professional Auth0 Role Management
+        </h3>
+        <p className="text-xs text-blue-700">
+          Your role is determined by Auth0's Role-Based Access Control (RBAC). 
+          Contact your system administrator to change roles or access levels.
+        </p>
+      </div>
+
       {/* Demo Buttons */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
         <button

@@ -1,16 +1,16 @@
-import { useAuth0 } from '@auth0/auth0-react';
+﻿import { useAuth0 } from '@auth0/auth0-react';
 import { useMemo } from 'react';
 
-// User roles for medical application
 export type UserRole = 'patient' | 'doctor' | 'admin';
 
-// User profile with medical information
 export interface MedicalUserProfile {
   sub: string;
   name?: string;
   email?: string;
   picture?: string;
   role: UserRole;
+  roles?: string[];
+  permissions?: string[];
   medical_license?: string;
   specialization?: string;
   department?: string;
@@ -29,73 +29,90 @@ export const useAuth = () => {
     getIdTokenClaims,
   } = useAuth0();
 
-  // Extract user role from Auth0 user metadata
   const userProfile: MedicalUserProfile | null = useMemo(() => {
     if (!user) return null;
 
-    const role = user['https://medsecureai.com/role'] || 'patient';
+    console.log('🔍 Raw Auth0 User:', user);
+    console.log('🔍 All User Properties:', Object.keys(user));
+
+    // Get roles and permissions from Auth0 custom claims
+    const namespace = 'https://medsecureai.com/';
+    const auth0Roles = user[`${namespace}roles`] || [];
+    const auth0Permissions = user[`${namespace}permissions`] || [];
+    
+    console.log('🎭 Auth0 Roles:', auth0Roles);
+    console.log('🔐 Auth0 Permissions:', auth0Permissions);
+    
+    // Debug: Check if roles exist in different formats
+    console.log('🔍 Direct roles:', user.roles);
+    console.log('🔍 App metadata:', user.app_metadata);
+    console.log('🔍 User metadata:', user.user_metadata);
+    
+    let role: UserRole = 'patient'; // Default role
+    
+    // Determine primary role (Admin > Doctor > Patient)
+    if (Array.isArray(auth0Roles)) {
+      if (auth0Roles.includes('Admin')) {
+        role = 'admin';
+      } else if (auth0Roles.includes('Doctor')) {
+        role = 'doctor';
+      } else if (auth0Roles.includes('Patient')) {
+        role = 'patient';
+      }
+    }
     
     return {
       sub: user.sub!,
       name: user.name,
       email: user.email,
       picture: user.picture,
-      role: role as UserRole,
-      medical_license: user['https://medsecureai.com/medical_license'],
-      specialization: user['https://medsecureai.com/specialization'],
-      department: user['https://medsecureai.com/department'],
-      patient_id: user['https://medsecureai.com/patient_id'],
+      role: role,
+      roles: Array.isArray(auth0Roles) ? auth0Roles : [],
+      permissions: Array.isArray(auth0Permissions) ? auth0Permissions : [],
+      medical_license: role === 'doctor' ? `MD-${user.sub?.slice(-6)}` : undefined,
+      specialization: role === 'doctor' ? 'Internal Medicine' : undefined,
+      department: role === 'doctor' ? 'General Practice' : undefined,
+      patient_id: role === 'patient' ? `P-${user.sub?.slice(-6)}` : undefined,
     };
   }, [user]);
 
-  // Check if user has specific role
   const hasRole = (role: UserRole): boolean => {
     return userProfile?.role === role;
   };
 
-  // Check if user has any of the specified roles
-  const hasAnyRole = (roles: UserRole[]): boolean => {
-    return userProfile ? roles.includes(userProfile.role) : false;
+  const hasPermission = (permission: string): boolean => {
+    return userProfile?.permissions?.includes(permission) || false;
   };
 
-  // Login with medical-specific parameters
-  const loginAsPatient = () => {
+  const login = () => {
     loginWithRedirect({
       authorizationParams: {
-        screen_hint: 'signup',
-        ui_locales: 'en',
-        login_hint: 'patient'
+        scope: 'openid profile email',
+        audience: 'https://api.medsecureai.com', // Important: request API access
       }
     });
   };
 
-  const loginAsDoctor = () => {
-    loginWithRedirect({
-      authorizationParams: {
-        screen_hint: 'login',
-        ui_locales: 'en',
-        login_hint: 'doctor'
-      }
-    });
-  };
-
-  // Logout with return to medical portal
-  const logoutUser = () => {
-    logout({
-      logoutParams: {
-        returnTo: window.location.origin + '/goodbye'
-      }
-    });
-  };
-
-  // Get access token for API calls
   const getToken = async (): Promise<string> => {
     try {
-      return await getAccessTokenSilently();
+      return await getAccessTokenSilently({
+        authorizationParams: {
+          audience: 'https://api.medsecureai.com',
+          scope: 'openid profile email',
+        }
+      });
     } catch (error) {
       console.error('Error getting access token:', error);
       throw error;
     }
+  };
+
+  const logoutUser = () => {
+    logout({
+      logoutParams: {
+        returnTo: window.location.origin
+      }
+    });
   };
 
   return {
@@ -104,9 +121,8 @@ export const useAuth = () => {
     isLoading,
     error,
     hasRole,
-    hasAnyRole,
-    loginAsPatient,
-    loginAsDoctor,
+    hasPermission,
+    login,
     logout: logoutUser,
     getToken,
     getIdTokenClaims,
