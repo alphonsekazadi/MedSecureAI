@@ -1,8 +1,9 @@
-// AI Service for MedSecureAI - Supports Multiple Providers
+// AI Service for MedSecureAI - Supports Multiple Providers with Auth0 AI Integration
 import Groq from 'groq-sdk';
 import { HfInference } from '@huggingface/inference';
 import { auth0AIService } from './auth0AIService';
 import { advancedMedicalTools } from './advancedMedicalTools';
+import { medicalRAGService } from './medicalRAGService';
 
 // AI Provider Types
 export type AIProvider = 'groq' | 'huggingface' | 'openai' | 'mock';
@@ -81,17 +82,40 @@ Your responses should be:
 Remember: This conversation is encrypted and HIPAA-compliant. Always prioritize patient safety and privacy.`;
   }
 
-  // Generate AI Response with Medical Safety
+  // Generate AI Response with Auth0 FGA-Filtered Knowledge (Challenge Requirement)
   async generateResponse(
-    messages: ChatMessage[], 
-    userToken?: string // Auth0 token for future API security features
+    messages: ChatMessage[],
+    userId?: string,
+    userRole?: string
   ): Promise<AIResponse> {
     try {
-      // Add medical system prompt
+      // Get the latest user message for RAG query
+      const latestMessage = messages[messages.length - 1];
+      const userQuery = latestMessage?.content || '';
+
+      // Apply Auth0 FGA to filter medical knowledge (Challenge Key Feature)
+      let ragContext = '';
+      let knowledgeSources: string[] = [];
+      let securityWarnings: string[] = [];
+
+      if (userId && userRole) {
+        console.log('🔒 Applying Auth0 FGA to RAG pipeline...');
+        const ragResponse = await medicalRAGService.generateSecureResponse(
+          userId,
+          userRole,
+          userQuery
+        );
+        
+        ragContext = `\n\n**AUTH0 FGA-FILTERED MEDICAL KNOWLEDGE:**\n${ragResponse.response}`;
+        knowledgeSources = ragResponse.knowledgeSources;
+        securityWarnings = ragResponse.warnings;
+      }
+
+      // Add medical system prompt with FGA-filtered context
       const systemMessage: ChatMessage = {
         id: 'system',
         role: 'system',
-        content: this.getMedicalSystemPrompt(),
+        content: this.getMedicalSystemPrompt() + ragContext,
         timestamp: new Date()
       };
 
@@ -113,8 +137,11 @@ Remember: This conversation is encrypted and HIPAA-compliant. Always prioritize 
           throw new Error(`Unsupported AI provider: ${this.provider}`);
       }
 
+      // Enhance response with Auth0 AI security information
+      const enhancedResponse = this.addSecurityFooter(response, knowledgeSources, securityWarnings);
+
       return {
-        message: response,
+        message: enhancedResponse,
         disclaimer: "This information is for educational purposes only. Always consult with healthcare professionals for medical advice.",
         suggestedActions: this.generateSuggestedActions(messages[messages.length - 1]?.content)
       };
@@ -416,49 +443,43 @@ MedSecureAI:`;
     };
   }
 
-  // Enhanced suggestion system with Auth0 AI features
-  private getEnhancedSuggestions(userMessage: string = ''): string[] {
-    const message = userMessage.toLowerCase();
-    const suggestions: string[] = [];
+  // Add Auth0 AI security information to response (Challenge Feature)
+  private addSecurityFooter(
+    response: string, 
+    knowledgeSources: string[], 
+    securityWarnings: string[]
+  ): string {
+    let footer = '\n\n---\n';
     
-    // Advanced Auth0 AI feature suggestions
-    if (message.includes('appointment') || message.includes('schedule') || message.includes('calendar')) {
-      if (auth0AIService.isTokenVaultEnabled()) {
-        suggestions.push('📅 View Google Calendar appointments (Token Vault)');
-        suggestions.push('📅 Schedule appointment (Async Authorization)');
-      }
+    // Add knowledge sources information
+    if (knowledgeSources.length > 0) {
+      footer += '🔒 **Auth0 FGA Knowledge Sources:**\n';
+      knowledgeSources.forEach(source => {
+        footer += `• ${source}\n`;
+      });
+      footer += '\n';
     }
-    
-    if (message.includes('record') || message.includes('medical') || message.includes('history')) {
-      if (auth0AIService.isFGAEnabled()) {
-        suggestions.push('🏥 Access medical records (Fine-Grained Auth)');
-        suggestions.push('🔒 View authorized patient data');
-      }
+
+    // Add security warnings
+    if (securityWarnings.length > 0) {
+      footer += '⚠️ **Security Notices:**\n';
+      securityWarnings.forEach(warning => {
+        footer += `• ${warning}\n`;
+      });
+      footer += '\n';
     }
-    
-    if (message.includes('medication') || message.includes('prescription') || message.includes('drug')) {
-      if (auth0AIService.isAsyncAuthEnabled()) {
-        suggestions.push('💊 Request prescription (Doctor Approval Required)');
-        suggestions.push('💊 Check drug interactions');
-      }
-    }
-    
-    if (message.includes('emergency') || message.includes('urgent')) {
-      suggestions.push('🚨 Emergency medical alert');
-      suggestions.push('📞 Contact emergency services');
-    }
-    
-    // Fallback to basic suggestions if no advanced features match
-    if (suggestions.length === 0) {
-      const availableFeatures = auth0AIService.getAvailableFeatures();
-      if (availableFeatures.length > 0) {
-        suggestions.push(`🔒 Advanced Auth0 AI features: ${availableFeatures.join(', ')}`);
-      }
-      suggestions.push(...this.generateSuggestedActions(userMessage));
-    }
-    
-    return suggestions.slice(0, 3);
+
+    // Add Auth0 AI features info
+    const auth0Status = this.getAuth0AIFeatureStatus();
+    footer += '🛡️ **Secured by Auth0 for AI Agents:**\n';
+    footer += `• User Authentication: ✅ Active\n`;
+    footer += `• Token Vault: ${auth0Status.tokenVault ? '✅ Enabled' : '❌ Disabled'}\n`;
+    footer += `• Fine-Grained Authorization: ${auth0Status.fga ? '✅ Filtering Knowledge' : '❌ Disabled'}\n`;
+    footer += `• Asynchronous Authorization: ${auth0Status.asyncAuth ? '✅ Enabled' : '❌ Disabled'}\n`;
+
+    return response + footer;
   }
+
 }
 
 // Export singleton instance

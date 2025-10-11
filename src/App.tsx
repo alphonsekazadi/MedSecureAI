@@ -5,6 +5,7 @@ import LandingPage from './components/LandingPage';
 import PatientDashboard from './components/PatientDashboard';
 import DoctorDashboard from './components/DoctorDashboard';
 import AdminDashboard from './components/AdminDashboard';
+import Auth0ChallengeDemo from './components/Auth0ChallengeDemo';
 import LoadingSpinner from './components/LoadingSpinner';
 
 // Protected Route Component
@@ -61,6 +62,14 @@ const AppRouter = () => {
           element={
             <ProtectedRoute allowedRoles={['admin']}>
               <AdminDashboard />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/challenge-demo" 
+          element={
+            <ProtectedRoute allowedRoles={['patient', 'doctor', 'admin']}>
+              <Auth0ChallengeDemo />
             </ProtectedRoute>
           } 
         />

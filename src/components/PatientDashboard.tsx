@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useAuth } from '../hooks/useAuth';
 import SecureAIChat from './SecureAIChat';
+import Auth0ChallengeDemo from './Auth0ChallengeDemo';
 
 const PatientDashboard = () => {
   const { user, logout } = useAuth();
@@ -64,6 +65,7 @@ const PatientDashboard = () => {
                 { id: 'chat', label: 'AI Assistant', icon: '🤖' },
                 { id: 'records', label: 'Medical Records', icon: '📋' },
                 { id: 'appointments', label: 'Appointments', icon: '📅' },
+                { id: 'challenge-demo', label: 'Auth0 Challenge Demo', icon: '🏆' },
               ].map((tab) => (
                 <button
                   key={tab.id}
@@ -187,6 +189,12 @@ const PatientDashboard = () => {
                 Schedule Appointment
               </button>
             </div>
+          </div>
+        )}
+
+        {activeTab === 'challenge-demo' && (
+          <div>
+            <Auth0ChallengeDemo />
           </div>
         )}
       </div>

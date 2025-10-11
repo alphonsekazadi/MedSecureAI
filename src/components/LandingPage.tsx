@@ -77,6 +77,13 @@ const LandingPage = () => {
             </div>
           </div>
 
+          {/* Challenge Demo Banner */}
+          <div className="bg-gradient-to-r from-purple-500 to-blue-600 rounded-xl p-6 text-white text-center mb-8">
+            <h3 className="text-xl font-bold mb-2">🏆 Auth0 for AI Agents Challenge Demo</h3>
+            <p className="text-purple-100 mb-4">See all three Auth0 AI pillars in action: User Authentication, Token Vault, and Fine-Grained Authorization</p>
+            <div className="text-sm text-purple-200">Log in to explore the interactive demo →</div>
+          </div>
+
           {/* Login Options */}
           <div className="space-y-4 max-w-md mx-auto">
             <button
