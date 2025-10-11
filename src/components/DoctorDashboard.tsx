@@ -1,8 +1,11 @@
+import { useState } from 'react';
 import { useAuth } from '../hooks/useAuth';
 import Auth0ChallengeDemo from './Auth0ChallengeDemo';
+import SecureAIChat from './SecureAIChat';
 
 const DoctorDashboard = () => {
   const { user, logout } = useAuth();
+  const [activeTab, setActiveTab] = useState('overview');
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -52,6 +55,36 @@ const DoctorDashboard = () => {
           <p className="text-gray-600">Secure healthcare provider dashboard</p>
         </div>
 
+        {/* Tab Navigation */}
+        <div className="mb-8">
+          <div className="border-b border-gray-200">
+            <nav className="-mb-px flex space-x-8">
+              {[
+                { id: 'overview', label: 'Patient Overview', icon: '📊' },
+                { id: 'chat', label: 'AI Assistant', icon: '🤖' },
+                { id: 'patients', label: 'Patient Records', icon: '📋' },
+                { id: 'prescriptions', label: 'Prescriptions', icon: '💊' },
+                { id: 'challenge-demo', label: 'Auth0 Challenge Demo', icon: '🏆' },
+              ].map((tab) => (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id)}
+                  className={`py-2 px-1 border-b-2 font-medium text-sm transition-colors duration-200 ${
+                    activeTab === tab.id
+                      ? 'border-green-500 text-green-600'
+                      : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                  }`}
+                >
+                  <span className="mr-2">{tab.icon}</span>
+                  {tab.label}
+                </button>
+              ))}
+            </nav>
+          </div>
+        </div>
+
+        {/* Tab Content */}
+        {activeTab === 'overview' && (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Patient Management */}
           <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
@@ -95,11 +128,31 @@ const DoctorDashboard = () => {
             </div>
           </div>
         </div>
+        )}
 
-        {/* Auth0 for AI Agents Challenge Demo Section */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {activeTab === 'chat' && (
+          <SecureAIChat />
+        )}
+
+        {activeTab === 'patients' && (
+          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">Patient Records</h3>
+            <p className="text-gray-600 mb-4">Access and manage patient medical records.</p>
+            <div className="text-sm text-gray-500">Patient records features coming soon...</div>
+          </div>
+        )}
+
+        {activeTab === 'prescriptions' && (
+          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">Prescriptions</h3>
+            <p className="text-gray-600 mb-4">Manage prescriptions and medication history.</p>
+            <div className="text-sm text-gray-500">Prescription management features coming soon...</div>
+          </div>
+        )}
+
+        {activeTab === 'challenge-demo' && (
           <Auth0ChallengeDemo />
-        </div>
+        )}
       </div>
     </div>
   );
