@@ -1,8 +1,17 @@
 # 🏥 MedSecureAI - Secure Healthcare AI Assistant
 
+## 🏆 Auth0 for AI Agents Challenge Submission
+
 [![Auth0](https://img.shields.io/badge/Auth0-Integrated-orange?logo=auth0)](https://auth0.com)
 [![HuggingFace](https://img.shields.io/badge/HuggingFace-AI%20Powered-yellow?logo=huggingface)](https://huggingface.co)
-[![React](https:/## 🏆 Why MedSecureAI Wins the Auth0 Challenge
+[![React](https://img.shields.io/badge/React-18-blue?logo=react)](https://reactjs.org)
+[![TypeScript](https://img.shields.io/badge/TypeScript-Strict-blue?logo=typescript)](https://www.typescriptlang.org)
+[![Challenge](https://img.shields.io/badge/Auth0%20AI%20Challenge-Complete-success?logo=auth0)](https://auth0.com)
+
+> **Submission Version:** v1.0.0-auth0-challenge  
+> **All 3 Auth0 AI Pillars Implemented:** User Authentication ✅ | Token Vault ✅ | Fine-Grained Authorization ✅
+
+## 🏆 Why MedSecureAI Wins the Auth0 Challenge
 
 ### 🎯 **Challenge Requirements Met**
 - **✅ Auth0 for AI Agents**: Complete implementation of advanced features
