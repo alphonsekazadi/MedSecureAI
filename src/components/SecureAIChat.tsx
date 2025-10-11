@@ -4,7 +4,7 @@ import { aiService } from '../services/aiService';
 import type { ChatMessage, AIResponse } from '../services/aiService';
 
 const SecureAIChat = () => {
-  const { user, getToken } = useAuth();
+  const { user } = useAuth();
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [inputMessage, setInputMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -58,11 +58,15 @@ How can I help you today?`,
     setIsLoading(true);
 
     try {
-      // Get Auth0 token for secure API calls
-      const token = await getToken();
+      // Generate AI response with Auth0 FGA knowledge filtering (Challenge Feature)
+      const userId = user?.sub || 'anonymous';
+      const userRole = user?.role || 'patient'; // Default to patient role
       
-      // Generate AI response
-      const aiResponse: AIResponse = await aiService.generateResponse([...messages, userMessage], token);
+      const aiResponse: AIResponse = await aiService.generateResponse(
+        [...messages, userMessage], 
+        userId, 
+        userRole
+      );
       
       const assistantMessage: ChatMessage = {
         id: crypto.randomUUID(),

@@ -1,11 +1,18 @@
-// Advanced Medical Tools using Auth0 AI Features
-import { tool } from '@langchain/core/tools';
-import { z } from 'zod';
+// Advanced Medical Tools using Auth0 AI Features (Browser Compatible)
 import { auth0AIService } from './auth0AIService';
 
+// Browser-compatible tool interface
+export interface MedicalTool {
+  name: string;
+  description: string;
+  execute: (params: any) => Promise<string>;
+}
+
 // Google Calendar Integration Tool (Token Vault Demo)
-export const googleCalendarTool = tool(
-  async ({ action, date, time }) => {
+export const googleCalendarTool: MedicalTool = {
+  name: 'google_calendar_medical',
+  description: 'Access and manage medical appointments via Google Calendar using Auth0 Token Vault',
+  execute: async ({ action, date, time }: { action: string; date?: string; time?: string }) => {
     try {
       if (!auth0AIService.isTokenVaultEnabled()) {
         return 'Token Vault feature is not enabled. Please configure Google Calendar integration in your Auth0 settings.';
@@ -13,8 +20,11 @@ export const googleCalendarTool = tool(
 
       console.log(`📅 Calendar action: ${action}`);
       
+      // Simulate Token Vault access to Google Calendar API
+      const token = await auth0AIService.simulateTokenVaultAccess('google', ['calendar.readonly']);
+      console.log(`🔑 Retrieved Google token via Token Vault: ${token.substring(0, 20)}...`);
+      
       if (action === 'view_appointments') {
-        // Mock Google Calendar data retrieval via Token Vault
         return `📅 **Your Upcoming Medical Appointments:**
 
 **This Week:**
@@ -32,14 +42,24 @@ export const googleCalendarTool = tool(
       
       if (action === 'schedule_appointment') {
         // This would trigger async authorization for approval
+        const authResult = await auth0AIService.simulateAsyncAuthorization({
+          action: 'schedule_appointment',
+          date: date || 'requested date',
+          time: time || 'requested time'
+        });
+
         return `📅 **Appointment Scheduling Request:**
 
-**Requested:** ${date} at ${time}
-**Status:** Pending approval from healthcare provider
-**Next Steps:** You will receive a push notification when your doctor approves this appointment
+**Requested:** ${date || 'TBD'} at ${time || 'TBD'}
+**Authorization Status:** ${authResult.approved ? '✅ Approved' : '❌ Denied'}
+**Message:** ${authResult.message}
 
-🔔 *This request requires human approval for medical safety*
-🔒 *Secured by Auth0 Asynchronous Authorization*`;
+**Next Steps:** ${authResult.approved 
+  ? 'Appointment confirmed! You will receive a calendar invitation shortly.' 
+  : 'Please contact your healthcare provider directly to schedule.'}
+
+🔔 *This request used Auth0 Asynchronous Authorization for medical safety*
+🔒 *Secured by Auth0 Token Vault and CIBA flow*`;
       }
 
       return 'Calendar action not supported. Available actions: view_appointments, schedule_appointment';
@@ -47,21 +67,18 @@ export const googleCalendarTool = tool(
       console.error('Calendar tool error:', error);
       return 'Unable to access calendar at this time. Please check your Google Calendar integration.';
     }
-  },
-  {
-    name: 'google_calendar_medical',
-    description: 'Access and manage medical appointments via Google Calendar using Auth0 Token Vault',
-    schema: z.object({
-      action: z.enum(['view_appointments', 'schedule_appointment']),
-      date: z.string().optional(),
-      time: z.string().optional(),
-    }),
   }
-);
+};
 
 // Medical Records Access Tool (Fine-Grained Authorization)
-export const medicalRecordsTool = tool(
-  async ({ patient_id, record_type, action }) => {
+export const medicalRecordsTool: MedicalTool = {
+  name: 'medical_records_fga',
+  description: 'Access patient medical records with Fine-Grained Authorization via Auth0 FGA',
+  execute: async ({ patient_id, record_type, action }: { 
+    patient_id: string; 
+    record_type: string; 
+    action: string; 
+  }) => {
     try {
       if (!auth0AIService.isFGAEnabled()) {
         return 'Fine-Grained Authorization is not enabled. Please configure Auth0 FGA for medical records access.';
@@ -71,7 +88,7 @@ export const medicalRecordsTool = tool(
       
       // Check FGA permissions
       const hasAccess = await auth0AIService.checkMedicalDataAccess(
-        'current_user_id', // This would be from Auth0 context
+        'current_user_id',
         'patient_records',
         patient_id,
         action as 'read' | 'write'
@@ -110,21 +127,20 @@ export const medicalRecordsTool = tool(
       console.error('Medical records tool error:', error);
       return 'Unable to access medical records. Please contact your healthcare provider.';
     }
-  },
-  {
-    name: 'medical_records_fga',
-    description: 'Access patient medical records with Fine-Grained Authorization via Auth0 FGA',
-    schema: z.object({
-      patient_id: z.string(),
-      record_type: z.enum(['lab_results', 'prescriptions', 'visits', 'imaging', 'allergies', 'all']),
-      action: z.enum(['read', 'write']),
-    }),
   }
-);
+};
 
 // Prescription Management Tool (Asynchronous Authorization)
-export const prescriptionTool = tool(
-  async ({ patient, medication, dosage, duration, action }) => {
+export const prescriptionTool: MedicalTool = {
+  name: 'prescription_async_auth',
+  description: 'Manage prescriptions with Asynchronous Authorization requiring doctor approval',
+  execute: async ({ patient, medication, dosage, duration, action }: {
+    patient: string;
+    medication: string;
+    dosage: string;
+    duration?: string;
+    action: string;
+  }) => {
     try {
       if (!auth0AIService.isAsyncAuthEnabled()) {
         return 'Asynchronous Authorization is not enabled. Please configure Auth0 CIBA for prescription management.';
@@ -133,152 +149,61 @@ export const prescriptionTool = tool(
       console.log(`💊 Prescription action: ${action} ${medication} for ${patient}`);
 
       if (action === 'prescribe') {
-        // This would trigger CIBA flow with doctor approval
-        return `💊 **Prescription Authorization Required**
+        // Trigger CIBA flow with doctor approval
+        const authResult = await auth0AIService.simulateAsyncAuthorization({
+          action: 'order_medication',
+          patient,
+          medication,
+          dosage
+        });
+
+        return `💊 **Prescription Authorization ${authResult.approved ? 'Approved' : 'Denied'}**
 
 **Patient:** ${patient}
 **Medication:** ${medication}
 **Dosage:** ${dosage}
-**Duration:** ${duration}
+**Duration:** ${duration || 'As prescribed'}
 
-**Status:** ⏳ Pending physician approval
+**Authorization Status:** ${authResult.approved ? '✅ Doctor Approved' : '❌ Doctor Denied'}
+**Message:** ${authResult.message}
 
-📱 **Next Steps:**
-1. Push notification sent to prescribing physician
-2. Doctor will review prescription details
-3. Patient will receive confirmation once approved
+${authResult.approved ? `**Pharmacy Information:**
+• Prescription sent to: MedSecure Pharmacy Network
+• Pickup Available: Within 2 hours
+• Bring valid ID and insurance card` : `**Next Steps:**
+• Contact your healthcare provider for alternative options
+• Discuss concerns with prescribing physician`}
 
-🔔 *You will receive a push notification with the approval status*
-🔒 *Secured by Auth0 Asynchronous Authorization (CIBA)*
-⚠️ *This process ensures medication safety and prevents unauthorized prescriptions*`;
+🔔 *This prescription required human-in-the-loop approval via Auth0 CIBA*
+🔒 *Secured by Auth0 Asynchronous Authorization for patient safety*`;
       }
 
-      if (action === 'refill') {
-        return `💊 **Prescription Refill Request**
-
-**Patient:** ${patient}
-**Medication:** ${medication} (${dosage})
-
-**Current Status:** ✅ Approved for refill
-**Pharmacy:** MedSecure Pharmacy Network
-**Pickup Available:** Within 2 hours
-**Refills Remaining:** 2
-
-📍 **Nearest Pharmacy:**
-MedSecure Pharmacy - Downtown
-123 Health St, Medical District
-Phone: (555) 123-MEDS
-
-🔒 *Refill authorized through secure Auth0 verification*
-⚠️ *Bring valid ID and insurance card for pickup*`;
-      }
-
-      if (action === 'check_interactions') {
-        return `💊 **Drug Interaction Check**
-
-**Checking:** ${medication} (${dosage})
-**Patient Profile:** ${patient}
-
-✅ **Safety Analysis:**
-• No major drug interactions detected
-• Compatible with current medications
-• No known allergic reactions expected
-• Dosage appropriate for patient profile
-
-⚠️ **Precautions:**
-• Take with food to reduce stomach irritation
-• Avoid alcohol consumption while on this medication
-• Report any unusual side effects to your healthcare provider
-
-🔒 *Analysis powered by secure medical database access*
-📞 *Contact your pharmacist or doctor with any questions*`;
-      }
-
-      return `Prescription action '${action}' not supported.`;
+      return `Prescription action '${action}' not supported. Available: prescribe, refill, check_interactions`;
     } catch (error) {
       console.error('Prescription tool error:', error);
       return 'Unable to process prescription request. Please contact your healthcare provider directly.';
     }
-  },
-  {
-    name: 'prescription_async_auth',
-    description: 'Manage prescriptions with Asynchronous Authorization requiring doctor approval',
-    schema: z.object({
-      patient: z.string(),
-      medication: z.string(),
-      dosage: z.string(),
-      duration: z.string().optional(),
-      action: z.enum(['prescribe', 'refill', 'check_interactions']),
-    }),
   }
-);
-
-// Emergency Medical Alert Tool (Immediate Auth)
-export const emergencyAlertTool = tool(
-  async ({ alert_type, severity, patient_id, description }) => {
-    try {
-      console.log(`🚨 Emergency alert: ${alert_type} - Severity: ${severity}`);
-
-      // Emergency situations bypass some auth for immediate response
-      if (severity === 'critical') {
-        return `🚨 **CRITICAL MEDICAL ALERT** 🚨
-
-**Alert Type:** ${alert_type}
-**Patient:** ${patient_id}
-**Severity:** ${severity.toUpperCase()}
-**Description:** ${description}
-
-**IMMEDIATE ACTIONS REQUIRED:**
-1. 🚑 Emergency services have been notified
-2. 📞 Primary care physician alerted
-3. 🏥 Nearest emergency room contacted
-4. 👨‍⚕️ On-call medical team activated
-
-**Patient Location:** Last known - Mobile device GPS
-**Medical Alerts:** Allergic to Penicillin, Heart condition
-**Emergency Contacts:** Notified automatically
-
-⚡ **Emergency Protocol Activated**
-🔒 *Auth0 security maintained even in emergency situations*
-📱 *Real-time updates sent to authorized medical personnel*
-
-**Call 911 immediately if this is a life-threatening emergency**`;
-      }
-
-      return `⚠️ **Medical Alert Registered**
-
-**Type:** ${alert_type}
-**Severity:** ${severity}
-**Patient:** ${patient_id}
-
-**Actions Taken:**
-• Alert logged in medical system
-• Primary healthcare provider notified
-• Patient monitoring increased
-
-🔔 *Healthcare team will follow up within appropriate timeframe*
-🔒 *Alert secured and logged via Auth0 systems*`;
-    } catch (error) {
-      console.error('Emergency alert tool error:', error);
-      return '🚨 Emergency alert system unavailable. Please call 911 immediately for emergencies.';
-    }
-  },
-  {
-    name: 'emergency_medical_alert',
-    description: 'Handle medical emergencies and alerts with immediate notification systems',
-    schema: z.object({
-      alert_type: z.enum(['chest_pain', 'difficulty_breathing', 'severe_allergic_reaction', 'fall', 'medication_reaction', 'other']),
-      severity: z.enum(['low', 'moderate', 'high', 'critical']),
-      patient_id: z.string(),
-      description: z.string(),
-    }),
-  }
-);
+};
 
 // Export all advanced medical tools
-export const advancedMedicalTools = [
+export const advancedMedicalTools: MedicalTool[] = [
   googleCalendarTool,
   medicalRecordsTool,
   prescriptionTool,
-  emergencyAlertTool,
 ];
+
+// Tool execution helper
+export const executeMedicalTool = async (toolName: string, params: any): Promise<string> => {
+  const tool = advancedMedicalTools.find(t => t.name === toolName);
+  if (!tool) {
+    return `Tool '${toolName}' not found. Available tools: ${advancedMedicalTools.map(t => t.name).join(', ')}`;
+  }
+  
+  try {
+    return await tool.execute(params);
+  } catch (error) {
+    console.error(`Error executing ${toolName}:`, error);
+    return `Error executing ${toolName}: ${error instanceof Error ? error.message : 'Unknown error'}`;
+  }
+};

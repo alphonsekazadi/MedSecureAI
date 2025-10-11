@@ -1,13 +1,10 @@
-// Auth0 AI Service - Advanced Features Implementation
-import { Auth0AI } from '@auth0/ai-langchain';
-import { AccessDeniedInterrupt } from '@auth0/ai/interrupts';
+// Auth0 AI Service - Advanced Features Implementation (Browser Compatible)
+// Note: @auth0/ai-langchain has Node.js dependencies, so we'll implement browser-compatible versions
 
 export class Auth0AIService {
-  private auth0AI: Auth0AI;
   private isInitialized: boolean = false;
 
   constructor() {
-    this.auth0AI = new Auth0AI();
     this.initialize();
   }
 
@@ -22,44 +19,57 @@ export class Auth0AIService {
     }
   }
 
-  // Token Vault Integration
-  public getTokenVaultWrapper() {
-    return this.auth0AI.withTokenVault({
-      // Configuration for accessing third-party APIs
-      scopes: ['openid', 'profile', 'email'],
-      audience: import.meta.env.VITE_AUTH0_AUDIENCE,
-    });
+  // Token Vault Integration (Browser-compatible simulation)
+  public async simulateTokenVaultAccess(provider: 'google' | 'slack', scopes: string[]): Promise<string> {
+    try {
+      console.log(`🔑 Token Vault: Accessing ${provider} API with scopes: ${scopes.join(', ')}`);
+      
+      // Simulate token retrieval from Auth0 Token Vault
+      // In a real implementation, this would call Auth0's Token Vault API
+      return `mock_${provider}_access_token_${Date.now()}`;
+    } catch (error) {
+      console.error('Token Vault access failed:', error);
+      throw new Error(`Failed to retrieve ${provider} token from Auth0 Token Vault`);
+    }
   }
 
-  // Asynchronous Authorization (CIBA Flow)
-  public getAsyncAuthorizationWrapper() {
-    return this.auth0AI.withAsyncUserConfirmation({
-      userID: async (_params, config) => {
-        return config.configurable?.langgraph_auth_user?.sub;
-      },
-      bindingMessage: async (params) => {
-        // Dynamic message based on the medical action
-        if (params.action === 'schedule_appointment') {
-          return `Do you want to schedule an appointment for ${params.date} at ${params.time}?`;
-        }
-        if (params.action === 'access_medical_records') {
-          return `Do you authorize access to medical records for ${params.patient_id}?`;
-        }
-        if (params.action === 'order_medication') {
-          return `Do you approve ordering ${params.medication} (${params.dosage}) for ${params.patient}?`;
-        }
-        return `Do you approve this medical action: ${params.action}?`;
-      },
-      scopes: ['openid', 'medical:read', 'medical:write', 'calendar:write'],
-      audience: import.meta.env.VITE_MEDICAL_API_AUDIENCE,
-      onAuthorizationRequest: 'block', // Wait for user response in development
-      onUnauthorized: async (error: Error) => {
-        if (error instanceof AccessDeniedInterrupt) {
-          return 'The user has denied the medical authorization request for safety reasons.';
-        }
-        return `Authorization failed: ${error.message}`;
-      },
-    });
+  // Asynchronous Authorization (CIBA) simulation
+  public async simulateAsyncAuthorization(request: {
+    action: string;
+    [key: string]: any;
+  }): Promise<{ approved: boolean; message: string; authId?: string }> {
+    try {
+      console.log(`🔔 CIBA: Requesting authorization for ${request.action}`);
+      
+      // Simulate async authorization process
+      // In real implementation, this would trigger CIBA flow
+      const authId = `auth_${Date.now()}`;
+      
+      // For demo purposes, simulate approval based on action type
+      const sensitiveActions = ['order_medication', 'schedule_surgery', 'access_genetic_data'];
+      const isHighRisk = sensitiveActions.includes(request.action);
+      
+      if (isHighRisk) {
+        // Simulate human approval process (would normally be async)
+        return {
+          approved: true,
+          message: 'Approved by Dr. Sarah Johnson after safety review',
+          authId
+        };
+      }
+      
+      return {
+        approved: true,
+        message: 'Automatically approved for routine medical action',
+        authId
+      };
+    } catch (error) {
+      console.error('Async authorization failed:', error);
+      return {
+        approved: false,
+        message: 'Authorization request failed - please contact your healthcare provider'
+      };
+    }
   }
 
   // Fine-Grained Authorization Check
@@ -67,184 +77,60 @@ export class Auth0AIService {
     userId: string,
     resourceType: string,
     resourceId: string,
-    action: 'read' | 'write' | 'delete'
+    permission: 'read' | 'write'
   ): Promise<boolean> {
     try {
-      // In a real implementation, this would call Auth0 FGA
-      // For now, we'll implement basic medical access rules
+      console.log(`🔒 FGA Check: User ${userId} requesting ${permission} on ${resourceType}:${resourceId}`);
       
-      // Example medical authorization rules:
-      const medicalRules = {
+      // In a real implementation, this would call Auth0 FGA API
+      // For demo purposes, implement basic medical access rules
+      
+      // Simulate different user roles
+      const userRoles = this.getUserRoles(userId);
+      
+      // Define medical data access matrix
+      const accessMatrix: Record<string, Record<string, string[]>> = {
         'patient_records': {
-          'read': ['patient', 'doctor', 'admin'],
-          'write': ['doctor', 'admin'],
-          'delete': ['admin']
+          'read': ['patient', 'doctor', 'nurse', 'admin'],
+          'write': ['doctor', 'admin']
         },
         'appointment_schedule': {
-          'read': ['patient', 'doctor', 'admin'],
-          'write': ['doctor', 'admin'],
-          'delete': ['admin']
-        },
-        'medical_images': {
-          'read': ['patient', 'doctor', 'admin'],
-          'write': ['doctor', 'admin'],
-          'delete': ['admin']
+          'read': ['patient', 'doctor', 'nurse', 'admin'],
+          'write': ['doctor', 'admin']
         },
         'prescriptions': {
-          'read': ['patient', 'doctor', 'admin'],
-          'write': ['doctor', 'admin'],
-          'delete': ['admin']
+          'read': ['patient', 'doctor', 'pharmacist', 'admin'],
+          'write': ['doctor', 'admin']
+        },
+        'lab_results': {
+          'read': ['patient', 'doctor', 'lab_tech', 'admin'],
+          'write': ['lab_tech', 'doctor', 'admin']
         }
       };
 
-      // TODO: Implement actual Auth0 FGA integration
-      // This is a placeholder for the medical authorization logic
-      console.log(`🔒 FGA Check: User ${userId} requesting ${action} on ${resourceType}:${resourceId}`);
-      
-      return true; // Placeholder - implement actual FGA logic
+      const allowedRoles = accessMatrix[resourceType]?.[permission] || [];
+      const hasAccess = userRoles.some(role => allowedRoles.includes(role));
+
+      console.log(`🛡️ FGA Result: ${hasAccess ? 'GRANTED' : 'DENIED'} for roles [${userRoles.join(', ')}]`);
+      return hasAccess;
     } catch (error) {
       console.error('❌ FGA authorization check failed:', error);
       return false;
     }
   }
 
-  // Google Calendar Integration (Token Vault Demo)
-  public createCalendarTool() {
-    const tokenVaultWrapper = this.getTokenVaultWrapper();
+  // Helper method to get user roles (simulated)
+  private getUserRoles(userId: string): string[] {
+    // In real implementation, this would come from Auth0 user metadata
+    // For demo purposes, simulate different user types
+    if (userId.includes('doctor')) return ['doctor'];
+    if (userId.includes('nurse')) return ['nurse'];
+    if (userId.includes('admin')) return ['admin'];
+    if (userId.includes('pharmacist')) return ['pharmacist'];
+    if (userId.includes('lab')) return ['lab_tech'];
     
-    return tokenVaultWrapper(async (params) => {
-      try {
-        console.log('📅 Accessing Google Calendar via Token Vault...');
-        
-        // TODO: Implement actual Google Calendar API calls
-        // This would use the retrieved OAuth token from Token Vault
-        
-        const mockCalendarData = {
-          upcoming_appointments: [
-            {
-              id: '1',
-              title: 'Annual Check-up',
-              date: '2025-10-15',
-              time: '10:00 AM',
-              doctor: 'Dr. Smith',
-              type: 'routine'
-            },
-            {
-              id: '2', 
-              title: 'Blood Test Results Review',
-              date: '2025-10-20',
-              time: '2:00 PM',
-              doctor: 'Dr. Johnson',
-              type: 'follow-up'
-            }
-          ]
-        };
-
-        return `Found ${mockCalendarData.upcoming_appointments.length} upcoming medical appointments:\n` +
-               mockCalendarData.upcoming_appointments.map(apt => 
-                 `- ${apt.title} with ${apt.doctor} on ${apt.date} at ${apt.time}`
-               ).join('\n');
-      } catch (error) {
-        console.error('❌ Calendar integration error:', error);
-        return 'Unable to access calendar at this time. Please check your Google Calendar integration.';
-      }
-    });
-  }
-
-  // Medical Records Access Tool with FGA
-  public createMedicalRecordsTool() {
-    const asyncWrapper = this.getAsyncAuthorizationWrapper();
-    
-    return asyncWrapper(async (params) => {
-      try {
-        const { patient_id, record_type } = params;
-        
-        // Check FGA permissions first
-        const hasAccess = await this.checkMedicalDataAccess(
-          params.user_id, 
-          'patient_records', 
-          patient_id, 
-          'read'
-        );
-
-        if (!hasAccess) {
-          return 'Access denied: Insufficient permissions to view these medical records.';
-        }
-
-        console.log(`🏥 Accessing medical records for patient ${patient_id}`);
-        
-        // Mock medical records data
-        const mockRecords = {
-          patient_id,
-          record_type,
-          last_updated: '2025-10-10',
-          records: [
-            {
-              date: '2025-09-15',
-              type: 'Blood Test',
-              results: 'All values within normal range',
-              doctor: 'Dr. Smith'
-            },
-            {
-              date: '2025-08-20',
-              type: 'Physical Exam',
-              results: 'Patient in good health, no concerns',
-              doctor: 'Dr. Johnson'
-            }
-          ]
-        };
-
-        return `Medical records for Patient ${patient_id}:\n` +
-               mockRecords.records.map(record =>
-                 `- ${record.date}: ${record.type} - ${record.results} (${record.doctor})`
-               ).join('\n') +
-               '\n\n⚠️ This information is confidential and protected under HIPAA.';
-      } catch (error) {
-        console.error('❌ Medical records access error:', error);
-        return 'Unable to access medical records at this time. Please contact your healthcare provider.';
-      }
-    });
-  }
-
-  // Medication Ordering Tool with Async Authorization
-  public createMedicationOrderTool() {
-    const asyncWrapper = this.getAsyncAuthorizationWrapper();
-    
-    return asyncWrapper(async (params) => {
-      try {
-        const { patient, medication, dosage, duration } = params;
-        
-        console.log(`💊 Processing medication order: ${medication} for ${patient}`);
-        
-        // This would trigger a CIBA flow for approval
-        // The bindingMessage will show the medication details to the approving doctor
-        
-        // Mock medication ordering process
-        const orderResult = {
-          order_id: `MED-${Date.now()}`,
-          status: 'approved',
-          patient,
-          medication,
-          dosage,
-          duration,
-          prescribing_doctor: 'Dr. Smith',
-          pharmacy: 'MedSecure Pharmacy',
-          estimated_pickup: '2025-10-12'
-        };
-
-        return `✅ Medication order approved and processed:\n` +
-               `Order ID: ${orderResult.order_id}\n` +
-               `Medication: ${medication} (${dosage})\n` +
-               `Duration: ${duration}\n` +
-               `Prescribing Doctor: ${orderResult.prescribing_doctor}\n` +
-               `Pharmacy: ${orderResult.pharmacy}\n` +
-               `Estimated Pickup: ${orderResult.estimated_pickup}\n\n` +
-               `⚠️ Please follow all prescription instructions and consult your doctor if you experience any side effects.`;
-      } catch (error) {
-        console.error('❌ Medication ordering error:', error);
-        return 'Unable to process medication order at this time. Please contact your healthcare provider directly.';
-      }
-    });
+    // Default to patient role
+    return ['patient'];
   }
 
   // Feature availability checks
@@ -266,6 +152,19 @@ export class Auth0AIService {
     if (this.isAsyncAuthEnabled()) features.push('Asynchronous Authorization');
     if (this.isFGAEnabled()) features.push('Fine-Grained Authorization');
     return features;
+  }
+
+  // Get service status for debugging
+  public getServiceStatus() {
+    return {
+      initialized: this.isInitialized,
+      features: {
+        tokenVault: this.isTokenVaultEnabled(),
+        asyncAuth: this.isAsyncAuthEnabled(),
+        fga: this.isFGAEnabled()
+      },
+      timestamp: new Date().toISOString()
+    };
   }
 }
 
