@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { useAuth } from '../hooks/useAuth';
 import SecureAIChat from './SecureAIChat';
 import Auth0ChallengeDemo from './Auth0ChallengeDemo';
+import PermissionTest from './PermissionTest';
+import Auth0Debug from './Auth0Debug';
 
 const PatientDashboard = () => {
   const { user, logout } = useAuth();
@@ -86,7 +88,14 @@ const PatientDashboard = () => {
 
         {/* Tab Content */}
         {activeTab === 'overview' && (
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <div className="space-y-8">
+            {/* Auth0 Debug Info */}
+            <Auth0Debug />
+            
+            {/* Auth0 Permission Test */}
+            <PermissionTest />
+            
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {/* Health Metrics */}
             <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
               <h3 className="text-lg font-semibold text-gray-900 mb-4">Health Metrics</h3>
@@ -157,6 +166,7 @@ const PatientDashboard = () => {
                   </div>
                 </div>
               </div>
+            </div>
             </div>
           </div>
         )}

@@ -1,7 +1,7 @@
 import { useAuth } from '../hooks/useAuth';
 
 const LandingPage = () => {
-  const { isAuthenticated, loginAsPatient, loginAsDoctor, isLoading } = useAuth();
+  const { isAuthenticated, login, isLoading } = useAuth();
 
   if (isLoading) {
     return (
@@ -44,6 +44,22 @@ const LandingPage = () => {
                 </svg>
                 <span>Secure</span>
               </div>
+              
+              {/* Auth Buttons in Navbar */}
+              <div className="flex items-center space-x-3">
+                <button
+                  onClick={login}
+                  className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200"
+                >
+                  Login
+                </button>
+                <button
+                  onClick={login}
+                  className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200"
+                >
+                  Sign Up
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -84,27 +100,24 @@ const LandingPage = () => {
             <div className="text-sm text-purple-200">Log in to explore the interactive demo →</div>
           </div>
 
-          {/* Login Options */}
-          <div className="space-y-4 max-w-md mx-auto">
+          {/* Professional Login */}
+          <div className="max-w-md mx-auto">
             <button
-              onClick={loginAsPatient}
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-4 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center space-x-2"
+              onClick={login}
+              className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold py-4 px-6 rounded-lg transition-all duration-200 flex items-center justify-center space-x-3 shadow-lg"
             >
-              <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+              <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
               </svg>
-              <span>Continue as Patient</span>
+              <span>Secure Medical Login</span>
             </button>
-
-            <button
-              onClick={loginAsDoctor}
-              className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-4 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center space-x-2"
-            >
-              <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-              </svg>
-              <span>Healthcare Provider Access</span>
-            </button>
+            
+            <div className="mt-4 text-center">
+              <p className="text-sm text-gray-600">
+                🔒 Role-based access controlled by Auth0<br/>
+                Your role determines your dashboard and permissions
+              </p>
+            </div>
           </div>
 
           {/* Security Features */}

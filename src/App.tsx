@@ -6,6 +6,7 @@ import PatientDashboard from './components/PatientDashboard';
 import DoctorDashboard from './components/DoctorDashboard';
 import AdminDashboard from './components/AdminDashboard';
 import Auth0ChallengeDemo from './components/Auth0ChallengeDemo';
+
 import LoadingSpinner from './components/LoadingSpinner';
 
 // Protected Route Component

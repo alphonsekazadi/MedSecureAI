@@ -1,4 +1,5 @@
 import { useAuth } from '../hooks/useAuth';
+import Auth0ChallengeDemo from './Auth0ChallengeDemo';
 
 const AdminDashboard = () => {
   const { user, logout } = useAuth();
@@ -203,6 +204,11 @@ const AdminDashboard = () => {
               </button>
             </div>
           </div>
+        </div>
+
+        {/* Auth0 for AI Agents Challenge Demo Section */}
+        <div className="mt-8">
+          <Auth0ChallengeDemo />
         </div>
       </div>
     </div>
