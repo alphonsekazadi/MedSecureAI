@@ -441,18 +441,18 @@ How can I help you today?`,
                   <div className="prose-sm max-w-none">
                     <ReactMarkdown
                       components={{
-                        h1: ({ children }) => <h1 className="text-lg font-bold text-white mb-3">{children}</h1>,
-                        h2: ({ children }) => <h2 className="text-base font-semibold text-white/90 mb-2">{children}</h2>,
-                        h3: ({ children }) => <h3 className="text-sm font-medium text-white/80 mb-2">{children}</h3>,
-                        p: ({ children }) => <p className="text-sm text-white/70 mb-2 leading-relaxed">{children}</p>,
-                        ul: ({ children }) => <ul className="text-sm text-white/70 mb-2 pl-4 space-y-1">{children}</ul>,
-                        ol: ({ children }) => <ol className="text-sm text-white/70 mb-2 pl-4 space-y-1">{children}</ol>,
-                        li: ({ children }) => <li className="list-disc">{children}</li>,
-                        strong: ({ children }) => <strong className="text-white font-semibold">{children}</strong>,
-                        em: ({ children }) => <em className="text-blue-300">{children}</em>,
-                        code: ({ children }) => <code className="bg-white/10 px-1 py-0.5 rounded text-xs text-blue-300">{children}</code>,
-                        blockquote: ({ children }) => (
-                          <blockquote className="border-l-2 border-blue-400/30 pl-3 text-white/60 italic">
+                        h1: ({ children, ...props }) => <h1 className="text-lg font-bold text-white mb-3" {...props}>{children}</h1>,
+                        h2: ({ children, ...props }) => <h2 className="text-base font-semibold text-white/90 mb-2" {...props}>{children}</h2>,
+                        h3: ({ children, ...props }) => <h3 className="text-sm font-medium text-white/80 mb-2" {...props}>{children}</h3>,
+                        p: ({ children, ...props }) => <p className="text-sm text-white/70 mb-2 leading-relaxed" {...props}>{children}</p>,
+                        ul: ({ children, ...props }) => <ul className="text-sm text-white/70 mb-2 pl-4 space-y-1" {...props}>{children}</ul>,
+                        ol: ({ children, ...props }) => <ol className="text-sm text-white/70 mb-2 pl-4 space-y-1" {...props}>{children}</ol>,
+                        li: ({ children, ...props }) => <li className="list-disc" {...props}>{children}</li>,
+                        strong: ({ children, ...props }) => <strong className="text-white font-semibold" {...props}>{children}</strong>,
+                        em: ({ children, ...props }) => <em className="text-blue-300" {...props}>{children}</em>,
+                        code: ({ children, ...props }) => <code className="bg-white/10 px-1 py-0.5 rounded text-xs text-blue-300" {...props}>{children}</code>,
+                        blockquote: ({ children, ...props }) => (
+                          <blockquote className="border-l-2 border-blue-400/30 pl-3 text-white/60 italic" {...props}>
                             {children}
                           </blockquote>
                         ),
