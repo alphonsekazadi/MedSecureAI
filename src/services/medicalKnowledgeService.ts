@@ -20,6 +20,11 @@ export interface MedicalKnowledgeItem {
   filePath: string;
 }
 
+// Alias for compatibility with SecureAIChat component
+export interface MedicalDocument extends MedicalKnowledgeItem {
+  sensitivityLevel: string;
+}
+
 export interface UserContext {
   role: 'patient' | 'doctor' | 'admin' | 'nurse' | 'pharmacist';
   specializations?: string[];
@@ -34,7 +39,7 @@ class MedicalKnowledgeService {
     this.initializeKnowledgeBase();
   }
 
-  private async initializeKnowledgeBase(): Promise<void> {
+  private initializeKnowledgeBase(): void {
     // In a real implementation, this would dynamically load and parse markdown files
     // For this demo, we'll use the static data we created
     
@@ -43,7 +48,7 @@ class MedicalKnowledgeService {
         id: 'diabetes-mellitus',
         title: 'Diabetes Mellitus Type 2',
         category: 'diagnostic',
-        content: await this.loadMarkdownContent('/src/data/medical-knowledge/diagnostics/diabetes-mellitus.md'),
+        content: this.loadMarkdownContent('/src/data/medical-knowledge/diagnostics/diabetes-mellitus.md'),
         metadata: {
           accessLevel: ['doctor', 'admin'],
           specializationRequired: ['endocrinology', 'internal-medicine', 'family-medicine'],
@@ -56,7 +61,7 @@ class MedicalKnowledgeService {
         id: 'hypertension',
         title: 'Hypertension Management',
         category: 'diagnostic',
-        content: await this.loadMarkdownContent('/src/data/medical-knowledge/diagnostics/hypertension.md'),
+        content: this.loadMarkdownContent('/src/data/medical-knowledge/diagnostics/hypertension.md'),
         metadata: {
           accessLevel: ['doctor', 'admin', 'nurse'],
           specializationRequired: ['cardiology', 'internal-medicine', 'family-medicine'],
@@ -69,7 +74,7 @@ class MedicalKnowledgeService {
         id: 'metformin',
         title: 'Metformin (Glucophage)',
         category: 'medication',
-        content: await this.loadMarkdownContent('/src/data/medical-knowledge/medications/metformin.md'),
+        content: this.loadMarkdownContent('/src/data/medical-knowledge/medications/metformin.md'),
         metadata: {
           accessLevel: ['doctor', 'admin', 'pharmacist'],
           prescribingAuthority: ['doctor', 'nurse-practitioner'],
@@ -83,7 +88,7 @@ class MedicalKnowledgeService {
         id: 'diabetes-lifestyle',
         title: 'Lifestyle Modifications for Diabetes Management',
         category: 'treatment',
-        content: await this.loadMarkdownContent('/src/data/medical-knowledge/treatments/diabetes-lifestyle-management.md'),
+        content: this.loadMarkdownContent('/src/data/medical-knowledge/treatments/diabetes-lifestyle-management.md'),
         metadata: {
           accessLevel: ['doctor', 'admin', 'nurse', 'dietitian', 'patient'],
           specializationRequired: ['endocrinology', 'internal-medicine', 'family-medicine', 'nutrition'],
@@ -98,7 +103,7 @@ class MedicalKnowledgeService {
     this.initialized = true;
   }
 
-  private async loadMarkdownContent(filePath: string): Promise<string> {
+  private loadMarkdownContent(filePath: string): string {
     // For this demo, we'll return the actual markdown content
     // In a production environment, this would dynamically load files
     
@@ -429,7 +434,7 @@ Lifestyle modifications are the cornerstone of diabetes management and can signi
   // Get knowledge items accessible to the current user
   public async getAccessibleKnowledge(user: UserContext): Promise<MedicalKnowledgeItem[]> {
     if (!this.initialized) {
-      await this.initializeKnowledgeBase();
+      this.initializeKnowledgeBase();
     }
 
     const accessibleItems = this.knowledgeBase.filter(item => 
@@ -460,7 +465,7 @@ Lifestyle modifications are the cornerstone of diabetes management and can signi
   // Get specific knowledge item with FGA check
   public async getKnowledgeItem(id: string, user: UserContext): Promise<MedicalKnowledgeItem | null> {
     if (!this.initialized) {
-      await this.initializeKnowledgeBase();
+      this.initializeKnowledgeBase();
     }
 
     const item = this.knowledgeBase.find(item => item.id === id);
@@ -502,7 +507,7 @@ Lifestyle modifications are the cornerstone of diabetes management and can signi
   // Admin function to get all knowledge items (bypasses FGA)
   public async getAllKnowledgeItems(): Promise<MedicalKnowledgeItem[]> {
     if (!this.initialized) {
-      await this.initializeKnowledgeBase();
+      this.initializeKnowledgeBase();
     }
     return this.knowledgeBase;
   }
@@ -542,6 +547,23 @@ Lifestyle modifications are the cornerstone of diabetes management and can signi
       accessPercentage,
       restrictedBy: [...new Set(restrictedBy)]
     };
+  }
+
+  // Compatibility methods for SecureAIChat component
+  public async getAvailableDocuments(user: UserContext): Promise<MedicalDocument[]> {
+    const items = await this.getAccessibleKnowledge(user);
+    return items.map(item => ({
+      ...item,
+      sensitivityLevel: item.metadata.sensitivity
+    }));
+  }
+
+  public async searchDocuments(query: string, user: UserContext): Promise<MedicalDocument[]> {
+    const items = await this.searchKnowledge(query, user);
+    return items.map(item => ({
+      ...item,
+      sensitivityLevel: item.metadata.sensitivity
+    }));
   }
 }
 
