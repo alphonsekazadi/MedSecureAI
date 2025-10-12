@@ -218,9 +218,9 @@ const UserManagement: React.FC = () => {
 
   if (!canManageUsers) {
     return (
-      <div className="bg-red-50 border border-red-200 rounded-lg p-6">
-        <h3 className="text-lg font-semibold text-red-800 mb-2">Access Denied</h3>
-        <p className="text-red-700">You do not have permission to access user management features.</p>
+      <div className="bg-red-500/10 backdrop-blur-xl border border-red-500/20 rounded-2xl p-6">
+        <h3 className="text-lg font-semibold text-red-400 mb-2">Access Denied</h3>
+        <p className="text-red-300">You do not have permission to access user management features.</p>
       </div>
     );
   }
@@ -230,13 +230,13 @@ const UserManagement: React.FC = () => {
       {/* Header */}
       <div className="flex justify-between items-center">
         <div>
-          <h3 className="text-2xl font-semibold text-gray-900">User Management</h3>
-          <p className="text-gray-600">Manage system users, roles, and permissions</p>
+          <h3 className="text-2xl font-semibold text-white">User Management</h3>
+          <p className="text-white/70">Manage system users, roles, and permissions</p>
         </div>
         
         <button
           onClick={() => setShowCreateForm(true)}
-          className="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 flex items-center space-x-2"
+          className="bg-purple-500/20 text-purple-400 px-4 py-2 rounded-xl hover:bg-purple-500/30 backdrop-blur-xl border border-purple-500/20 flex items-center space-x-2 transition-all duration-200"
         >
           <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -247,32 +247,32 @@ const UserManagement: React.FC = () => {
 
       {/* Stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div className="bg-white p-4 rounded-lg border">
-          <div className="text-sm text-gray-600">Total Users</div>
-          <div className="text-2xl font-bold text-gray-900">{users.length}</div>
+        <div className="bg-white/10 backdrop-blur-xl rounded-xl border border-white/20 p-4 hover:bg-white/15 transition-all duration-200">
+          <div className="text-sm text-white/60">Total Users</div>
+          <div className="text-2xl font-bold text-white">{users.length}</div>
         </div>
-        <div className="bg-white p-4 rounded-lg border">
-          <div className="text-sm text-gray-600">Doctors</div>
-          <div className="text-2xl font-bold text-green-600">
+        <div className="bg-white/10 backdrop-blur-xl rounded-xl border border-white/20 p-4 hover:bg-white/15 transition-all duration-200">
+          <div className="text-sm text-white/60">Doctors</div>
+          <div className="text-2xl font-bold text-green-400">
             {users.filter(u => u.role === 'doctor').length}
           </div>
         </div>
-        <div className="bg-white p-4 rounded-lg border">
-          <div className="text-sm text-gray-600">Patients</div>
-          <div className="text-2xl font-bold text-blue-600">
+        <div className="bg-white/10 backdrop-blur-xl rounded-xl border border-white/20 p-4 hover:bg-white/15 transition-all duration-200">
+          <div className="text-sm text-white/60">Patients</div>
+          <div className="text-2xl font-bold text-blue-400">
             {users.filter(u => u.role === 'patient').length}
           </div>
         </div>
-        <div className="bg-white p-4 rounded-lg border">
-          <div className="text-sm text-gray-600">Active</div>
-          <div className="text-2xl font-bold text-green-600">
+        <div className="bg-white/10 backdrop-blur-xl rounded-xl border border-white/20 p-4 hover:bg-white/15 transition-all duration-200">
+          <div className="text-sm text-white/60">Active</div>
+          <div className="text-2xl font-bold text-green-400">
             {users.filter(u => u.status === 'active').length}
           </div>
         </div>
       </div>
 
       {/* Filters and Search */}
-      <div className="bg-white p-4 rounded-lg border">
+      <div className="bg-white/10 backdrop-blur-xl rounded-xl border border-white/20 p-4">
         <div className="flex flex-col md:flex-row gap-4">
           <div className="flex-1">
             <input
@@ -280,22 +280,22 @@ const UserManagement: React.FC = () => {
               placeholder="Search users..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full border border-gray-300 rounded-md px-3 py-2"
+              className="w-full bg-white/10 backdrop-blur-xl border border-white/20 rounded-xl px-3 py-2 text-white placeholder-white/50 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
             />
           </div>
           <div>
             <select
               value={filter}
               onChange={(e) => setFilter(e.target.value)}
-              className="border border-gray-300 rounded-md px-3 py-2"
+              className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-xl px-3 py-2 text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent"
             >
-              <option value="all">All Users</option>
-              <option value="admin">Admins</option>
-              <option value="doctor">Doctors</option>
-              <option value="patient">Patients</option>
-              <option value="active">Active</option>
-              <option value="inactive">Inactive</option>
-              <option value="suspended">Suspended</option>
+              <option value="all" className="bg-gray-800 text-white">All Users</option>
+              <option value="admin" className="bg-gray-800 text-white">Admins</option>
+              <option value="doctor" className="bg-gray-800 text-white">Doctors</option>
+              <option value="patient" className="bg-gray-800 text-white">Patients</option>
+              <option value="active" className="bg-gray-800 text-white">Active</option>
+              <option value="inactive" className="bg-gray-800 text-white">Inactive</option>
+              <option value="suspended" className="bg-gray-800 text-white">Suspended</option>
             </select>
           </div>
         </div>
