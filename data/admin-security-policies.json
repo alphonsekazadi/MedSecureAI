@@ -1,0 +1,383 @@
+{
+  "document_type": "administrative_policies",
+  "version": "2.1.0",
+  "last_updated": "2025-10-12",
+  "classification": "CONFIDENTIAL - ADMIN ONLY",
+  "
+": {
+    "title": "Politiques Administratives et Sécurité - MedSecureAI",
+    "subtitle": "Gouvernance, Conformité et Gestion des Risques",
+    "organization": "MedSecureAI Healthcare Platform",
+    "document_owner": "Chief Security Officer",
+    "approval_authority": "Executive Board"
+  },
+  
+  "security_policies": {
+    "access_control": {
+      "authentication_requirements": {
+        "multi_factor_auth": {
+          "enabled": true,
+          "required_factors": ["password", "auth0_token", "biometric_optional"],
+          "session_timeout": "30_minutes_inactivity",
+          "concurrent_sessions": 2
+        },
+        "password_policy": {
+          "minimum_length": 12,
+          "complexity_requirements": ["uppercase", "lowercase", "numbers", "special_chars"],
+          "rotation_period": "90_days",
+          "history_prevention": 12
+        }
+      },
+      "role_based_permissions": {
+        "patient": {
+          "data_access": ["own_medical_records", "own_appointments", "own_prescriptions"],
+          "actions": ["view_profile", "schedule_appointments", "message_providers"],
+          "restrictions": ["no_admin_functions", "no_other_patient_data"]
+        },
+        "doctor": {
+          "data_access": ["assigned_patients", "medical_protocols", "drug_database"],
+          "actions": ["create_prescriptions", "update_medical_records", "schedule_procedures"],
+          "restrictions": ["no_admin_functions", "no_unassigned_patient_data"]
+        },
+        "admin": {
+          "data_access": ["all_system_data", "security_logs", "audit_trails"],
+          "actions": ["manage_users", "configure_system", "access_reports"],
+          "restrictions": ["detailed_medical_data_anonymized_only"]
+        }
+      }
+    },
+    
+    "data_protection": {
+      "encryption": {
+        "data_at_rest": {
+          "algorithm": "AES-256-GCM",
+          "key_management": "AWS_KMS",
+          "rotation_frequency": "annual"
+        },
+        "data_in_transit": {
+          "protocol": "TLS_1.3",
+          "cipher_suites": ["ECDHE-RSA-AES256-GCM-SHA384"],
+          "certificate_authority": "Let's_Encrypt"
+        }
+      },
+      "backup_and_recovery": {
+        "backup_frequency": "daily_incremental_weekly_full",
+        "retention_period": "7_years_medical_data",
+        "recovery_time_objective": "4_hours",
+        "recovery_point_objective": "1_hour",
+        "geographic_distribution": ["primary_eu", "secondary_us"]
+      }
+    },
+    
+    "compliance_frameworks": [
+      {
+        "name": "HIPAA",
+        "status": "compliant",
+        "last_audit": "2025-08-15",
+        "next_audit": "2026-08-15",
+        "compliance_score": "98%"
+      },
+      {
+        "name": "GDPR",
+        "status": "compliant", 
+        "last_audit": "2025-09-01",
+        "next_audit": "2026-09-01",
+        "compliance_score": "96%"
+      },
+      {
+        "name": "SOC2_Type_II",
+        "status": "compliant",
+        "last_audit": "2025-07-20",
+        "next_audit": "2026-07-20",
+        "compliance_score": "99%"
+      }
+    ]
+  },
+  
+  "user_management": {
+    "account_lifecycle": {
+      "provisioning": {
+        "approval_workflow": ["manager_approval", "security_clearance", "admin_verification"],
+        "automated_provisioning": false,
+        "default_access_level": "minimal_required",
+        "onboarding_checklist": [
+          "identity_verification",
+          "background_check_medical_staff",
+          "security_training_completion",
+          "policy_acknowledgment",
+          "equipment_assignment"
+        ]
+      },
+      "modifications": {
+        "role_changes": {
+          "approval_required": true,
+          "approver_roles": ["admin", "department_head"],
+          "effective_delay": "24_hours",
+          "notification_stakeholders": true
+        },
+        "access_reviews": {
+          "frequency": "quarterly",
+          "automated_flagging": true,
+          "manager_certification": "required"
+        }
+      },
+      "deprovisioning": {
+        "immediate_actions": [
+          "disable_authentication",
+          "revoke_access_tokens", 
+          "block_api_access",
+          "archive_user_data"
+        ],
+        "data_retention": {
+          "personal_data": "deleted_after_30_days",
+          "medical_records_created": "retained_per_legal_requirements",
+          "audit_logs": "retained_7_years"
+        }
+      }
+    },
+    
+    "privileged_accounts": {
+      "admin_accounts": {
+        "maximum_count": 5,
+        "review_frequency": "monthly",
+        "additional_monitoring": true,
+        "emergency_access_procedure": "break_glass_with_audit"
+      },
+      "service_accounts": {
+        "automated_rotation": "quarterly",
+        "usage_monitoring": "continuous",
+        "permission_principle": "least_privilege"
+      }
+    }
+  },
+  
+  "incident_response": {
+    "severity_levels": {
+      "critical": {
+        "definition": "Data breach affecting >1000 patients or system downtime >4 hours",
+        "response_time": "immediate",
+        "notification_requirements": ["ceo", "legal", "regulatory_bodies"],
+        "escalation_chain": ["security_team", "executive_team", "board_of_directors"]
+      },
+      "high": {
+        "definition": "Security incident with potential data exposure or service degradation",
+        "response_time": "30_minutes",
+        "notification_requirements": ["security_team", "affected_department_heads"],
+        "escalation_chain": ["security_team", "cto", "ceo_if_prolonged"]
+      },
+      "medium": {
+        "definition": "Performance issues or minor security events",
+        "response_time": "2_hours",
+        "notification_requirements": ["technical_team", "department_manager"],
+        "escalation_chain": ["technical_lead", "department_head"]
+      },
+      "low": {
+        "definition": "Minor issues with minimal impact",
+        "response_time": "24_hours",
+        "notification_requirements": ["technical_team"],
+        "escalation_chain": ["assigned_technician", "technical_lead"]
+      }
+    },
+    
+    "communication_plan": {
+      "internal_stakeholders": {
+        "executive_team": "critical_and_high_incidents",
+        "department_heads": "incidents_affecting_their_area",
+        "all_staff": "system_wide_outages",
+        "board_of_directors": "regulatory_reportable_incidents"
+      },
+      "external_stakeholders": {
+        "patients": "service_interruptions_affecting_care",
+        "regulatory_bodies": "data_breaches_within_72_hours",
+        "insurance_partners": "incidents_affecting_claims",
+        "media": "only_after_legal_review_if_required"
+      }
+    }
+  },
+  
+  "audit_and_monitoring": {
+    "logging_requirements": {
+      "authentication_events": {
+        "successful_logins": true,
+        "failed_logins": true,
+        "password_changes": true,
+        "privilege_escalations": true,
+        "retention_period": "2_years"
+      },
+      "data_access": {
+        "medical_record_access": true,
+        "prescription_modifications": true,
+        "patient_data_exports": true,
+        "admin_actions": true,
+        "retention_period": "7_years"
+      },
+      "system_events": {
+        "configuration_changes": true,
+        "software_updates": true,
+        "network_connections": true,
+        "error_conditions": true,
+        "retention_period": "1_year"
+      }
+    },
+    
+    "monitoring_thresholds": {
+      "failed_login_attempts": {
+        "threshold": "5_attempts_per_user_per_hour",
+        "action": "account_temporary_lock",
+        "alert": "security_team_immediate"
+      },
+      "data_export_volume": {
+        "threshold": "1000_records_per_day_per_user",
+        "action": "manager_approval_required",
+        "alert": "department_head_and_security"
+      },
+      "after_hours_access": {
+        "threshold": "any_access_between_22h_06h",
+        "action": "additional_verification",
+        "alert": "security_team_next_day_review"
+      }
+    }
+  },
+  
+  "operational_procedures": {
+    "change_management": {
+      "categories": {
+        "emergency": {
+          "approval": "security_officer_or_cto",
+          "implementation_window": "immediate",
+          "post_implementation_review": "within_24_hours"
+        },
+        "standard": {
+          "approval": "change_advisory_board",
+          "implementation_window": "scheduled_maintenance",
+          "testing_requirements": "staging_environment_validation"
+        },
+        "major": {
+          "approval": "executive_committee",
+          "implementation_window": "quarterly_releases",
+          "requirements": ["security_assessment", "impact_analysis", "rollback_plan"]
+        }
+      }
+    },
+    
+    "business_continuity": {
+      "disaster_recovery": {
+        "rto_target": "4_hours",
+        "rpo_target": "1_hour",
+        "testing_frequency": "quarterly",
+        "backup_sites": ["aws_eu_west_1", "aws_us_east_1"]
+      },
+      "emergency_contacts": {
+        "primary_on_call": "+33-1-XX-XX-XX-XX",
+        "secondary_on_call": "+33-1-XX-XX-XX-XY",
+        "escalation_manager": "+33-1-XX-XX-XX-XZ",
+        "vendor_support": "support@medsecureai.com"
+      }
+    }
+  },
+  
+  "performance_metrics": {
+    "security_kpis": {
+      "mean_time_to_detect": {
+        "current": "15_minutes",
+        "target": "10_minutes",
+        "measurement_period": "monthly"
+      },
+      "mean_time_to_respond": {
+        "current": "45_minutes",
+        "target": "30_minutes",
+        "measurement_period": "monthly"
+      },
+      "security_training_completion": {
+        "current": "94%",
+        "target": "100%",
+        "measurement_period": "quarterly"
+      }
+    },
+    
+    "operational_kpis": {
+      "system_availability": {
+        "current": "99.9%",
+        "target": "99.95%",
+        "measurement_period": "monthly"
+      },
+      "user_satisfaction": {
+        "current": "4.7/5",
+        "target": "4.8/5",
+        "measurement_period": "quarterly"
+      },
+      "compliance_score": {
+        "current": "97.5%",
+        "target": "98%",
+        "measurement_period": "continuous"
+      }
+    }
+  },
+  
+  "vendor_management": {
+    "security_requirements": {
+      "minimum_standards": [
+        "SOC2_Type_II_certification",
+        "ISO27001_compliance",
+        "penetration_testing_annual",
+        "encryption_at_rest_and_transit"
+      ],
+      "assessment_process": {
+        "security_questionnaire": "required",
+        "on_site_audit": "for_critical_vendors",
+        "continuous_monitoring": "security_ratings_service",
+        "contract_security_clauses": "mandatory"
+      }
+    }
+  },
+  
+  "training_and_awareness": {
+    "mandatory_training": {
+      "new_employee_orientation": {
+        "duration": "4_hours",
+        "topics": ["hipaa_basics", "gdpr_compliance", "password_security", "phishing_awareness"],
+        "completion_deadline": "first_week_of_employment"
+      },
+      "annual_refresher": {
+        "duration": "2_hours",
+        "topics": ["updated_policies", "new_threats", "incident_examples"],
+        "completion_deadline": "anniversary_of_hire_date"
+      },
+      "role_specific_training": {
+        "medical_staff": ["patient_privacy", "medical_device_security"],
+        "it_staff": ["secure_coding", "infrastructure_security"],
+        "admin_staff": ["privileged_access_management", "audit_procedures"]
+      }
+    },
+    
+    "awareness_campaigns": {
+      "phishing_simulations": {
+        "frequency": "monthly",
+        "failure_threshold": "10%",
+        "remedial_training": "immediate_for_failures"
+      },
+      "security_newsletters": {
+        "frequency": "quarterly",
+        "topics": ["threat_landscape", "policy_updates", "best_practices"]
+      }
+    }
+  },
+  
+  "document_control": {
+    "review_schedule": {
+      "security_policies": "annually",
+      "operational_procedures": "semi_annually",
+      "emergency_procedures": "quarterly"
+    },
+    "approval_matrix": {
+      "policy_changes": "security_officer_and_legal",
+      "procedure_updates": "department_head_and_compliance",
+      "emergency_procedures": "security_officer_only"
+    },
+    "distribution": {
+      "confidentiality_levels": ["public", "internal", "confidential", "restricted"],
+      "access_controls": "role_based_distribution_lists",
+      "version_control": "centralized_document_management_system"
+    }
+  }
+}
