@@ -1,5 +1,16 @@
 import { useState } from 'react';
 import { useAuth } from '../hooks/useAuth';
+import { 
+  BarChart3, 
+  BookOpen, 
+  Bot, 
+  Users, 
+  Calendar, 
+  FileText, 
+  Pill, 
+  Shield, 
+  Trophy 
+} from 'lucide-react';
 import Auth0ChallengeDemo from './Auth0ChallengeDemo';
 import SecureAIChat from './SecureAIChat';
 import UserManagement from './UserManagement';
@@ -80,26 +91,26 @@ const AdminDashboard = () => {
           <div className="bg-white/5 backdrop-blur-xl rounded-2xl border border-white/10 p-6">
             <nav className="flex flex-wrap gap-2">
               {[
-                { id: 'overview', label: 'System Overview', icon: '📊' },
-                { id: 'knowledge', label: 'Medical Knowledge', icon: '📚' },
-                { id: 'chat', label: 'AI Assistant', icon: '🤖' },
-                { id: 'users', label: 'User Management', icon: '👥' },
-                { id: 'appointments', label: 'All Appointments', icon: '📅' },
-                { id: 'records', label: 'All Records', icon: '📋' },
-                { id: 'prescriptions', label: 'All Prescriptions', icon: '💊' },
-                { id: 'security', label: 'Security', icon: '🔒' },
-                { id: 'challenge-demo', label: 'Auth0 Challenge Demo', icon: '🏆' },
+                { id: 'overview', label: 'System Overview', icon: BarChart3 },
+                { id: 'knowledge', label: 'Medical Knowledge', icon: BookOpen },
+                { id: 'chat', label: 'AI Assistant', icon: Bot },
+                { id: 'users', label: 'User Management', icon: Users },
+                { id: 'appointments', label: 'All Appointments', icon: Calendar },
+                { id: 'records', label: 'All Records', icon: FileText },
+                { id: 'prescriptions', label: 'All Prescriptions', icon: Pill },
+                { id: 'security', label: 'Security', icon: Shield },
+                { id: 'challenge-demo', label: 'Auth0 Challenge Demo', icon: Trophy },
               ].map((tab) => (
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`px-4 py-2 rounded-xl font-medium text-sm transition-all duration-200 backdrop-blur-xl border ${
+                  className={`px-4 py-2 rounded-xl font-medium text-sm transition-all duration-200 backdrop-blur-xl border flex items-center ${
                     activeTab === tab.id
                       ? 'bg-purple-500/20 border-purple-400/40 text-purple-300 shadow-lg shadow-purple-500/10'
                       : 'bg-white/10 border-white/20 text-white/70 hover:bg-white/15 hover:text-white hover:border-white/30'
                   }`}
                 >
-                  <span className="mr-2">{tab.icon}</span>
+                  <tab.icon className="h-4 w-4 mr-2" />
                   {tab.label}
                 </button>
               ))}
