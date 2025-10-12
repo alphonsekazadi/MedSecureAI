@@ -242,32 +242,32 @@ const PrescriptionManager: React.FC = () => {
 
       {/* Stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div className="bg-white p-4 rounded-lg border">
-          <div className="text-sm text-gray-600">Total</div>
-          <div className="text-2xl font-bold text-gray-900">{prescriptions.length}</div>
+        <div className="bg-white/10 backdrop-blur-xl rounded-xl border border-white/20 p-4 hover:bg-white/15 transition-all duration-200">
+          <div className="text-sm text-white/60">Total</div>
+          <div className="text-2xl font-bold text-white">{prescriptions.length}</div>
         </div>
-        <div className="bg-white p-4 rounded-lg border">
-          <div className="text-sm text-gray-600">Active</div>
-          <div className="text-2xl font-bold text-green-600">
+        <div className="bg-white/10 backdrop-blur-xl rounded-xl border border-white/20 p-4 hover:bg-white/15 transition-all duration-200">
+          <div className="text-sm text-white/60">Active</div>
+          <div className="text-2xl font-bold text-green-400">
             {prescriptions.filter(p => p.status === 'active').length}
           </div>
         </div>
-        <div className="bg-white p-4 rounded-lg border">
-          <div className="text-sm text-gray-600">Completed</div>
-          <div className="text-2xl font-bold text-blue-600">
+        <div className="bg-white/10 backdrop-blur-xl rounded-xl border border-white/20 p-4 hover:bg-white/15 transition-all duration-200">
+          <div className="text-sm text-white/60">Completed</div>
+          <div className="text-2xl font-bold text-blue-400">
             {prescriptions.filter(p => p.status === 'completed').length}
           </div>
         </div>
-        <div className="bg-white p-4 rounded-lg border">
-          <div className="text-sm text-gray-600">Refills Available</div>
-          <div className="text-2xl font-bold text-purple-600">
+        <div className="bg-white/10 backdrop-blur-xl rounded-xl border border-white/20 p-4 hover:bg-white/15 transition-all duration-200">
+          <div className="text-sm text-white/60">Refills Available</div>
+          <div className="text-2xl font-bold text-purple-400">
             {prescriptions.reduce((sum, p) => sum + (p.refillsAllowed - p.refillsUsed), 0)}
           </div>
         </div>
       </div>
 
       {/* Filters and Search */}
-      <div className="bg-white p-4 rounded-lg border">
+      <div className="bg-white/10 backdrop-blur-xl rounded-xl border border-white/20 p-4">
         <div className="flex flex-col md:flex-row gap-4">
           <div className="flex-1">
             <input
@@ -275,20 +275,20 @@ const PrescriptionManager: React.FC = () => {
               placeholder="Search prescriptions..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full border border-gray-300 rounded-md px-3 py-2"
+              className="w-full bg-white/10 backdrop-blur-xl border border-white/20 rounded-xl px-3 py-2 text-white placeholder-white/50 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
             />
           </div>
           <div>
             <select
               value={filter}
               onChange={(e) => setFilter(e.target.value)}
-              className="border border-gray-300 rounded-md px-3 py-2"
+              className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-xl px-3 py-2 text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent"
             >
-              <option value="all">All Prescriptions</option>
-              <option value="active">Active</option>
-              <option value="completed">Completed</option>
-              <option value="cancelled">Cancelled</option>
-              <option value="expired">Expired</option>
+              <option value="all" className="bg-gray-800 text-white">All Prescriptions</option>
+              <option value="active" className="bg-gray-800 text-white">Active</option>
+              <option value="completed" className="bg-gray-800 text-white">Completed</option>
+              <option value="cancelled" className="bg-gray-800 text-white">Cancelled</option>
+              <option value="expired" className="bg-gray-800 text-white">Expired</option>
             </select>
           </div>
         </div>
@@ -296,92 +296,92 @@ const PrescriptionManager: React.FC = () => {
 
       {/* Create Form */}
       {showCreateForm && (
-        <div className="bg-white p-6 rounded-lg border">
-          <h4 className="text-lg font-semibold mb-4">Create New Prescription</h4>
+        <div className="bg-white/10 backdrop-blur-xl rounded-xl border border-white/20 p-6">
+          <h4 className="text-lg font-semibold text-white mb-4">Create New Prescription</h4>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Patient Name</label>
+              <label className="block text-sm font-medium text-white mb-1">Patient Name</label>
               <input
                 type="text"
                 value={newPrescription.patientName}
                 onChange={(e) => setNewPrescription({...newPrescription, patientName: e.target.value})}
-                className="w-full border border-gray-300 rounded-md px-3 py-2"
+                className="w-full bg-white/10 backdrop-blur-xl border border-white/20 rounded-xl px-3 py-2 text-white placeholder-white/50 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                 placeholder="Patient full name"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Patient Email</label>
+              <label className="block text-sm font-medium text-white mb-1">Patient Email</label>
               <input
                 type="email"
                 value={newPrescription.patientEmail}
                 onChange={(e) => setNewPrescription({...newPrescription, patientEmail: e.target.value})}
-                className="w-full border border-gray-300 rounded-md px-3 py-2"
+                className="w-full bg-white/10 backdrop-blur-xl border border-white/20 rounded-xl px-3 py-2 text-white placeholder-white/50 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                 placeholder="patient@email.com"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Medication</label>
+              <label className="block text-sm font-medium text-white mb-1">Medication</label>
               <input
                 type="text"
                 value={newPrescription.medication}
                 onChange={(e) => setNewPrescription({...newPrescription, medication: e.target.value})}
-                className="w-full border border-gray-300 rounded-md px-3 py-2"
+                className="w-full bg-white/10 backdrop-blur-xl border border-white/20 rounded-xl px-3 py-2 text-white placeholder-white/50 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                 placeholder="Medication name"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Dosage</label>
+              <label className="block text-sm font-medium text-white mb-1">Dosage</label>
               <input
                 type="text"
                 value={newPrescription.dosage}
                 onChange={(e) => setNewPrescription({...newPrescription, dosage: e.target.value})}
-                className="w-full border border-gray-300 rounded-md px-3 py-2"
+                className="w-full bg-white/10 backdrop-blur-xl border border-white/20 rounded-xl px-3 py-2 text-white placeholder-white/50 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                 placeholder="e.g., 10mg, 250mg"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Frequency</label>
+              <label className="block text-sm font-medium text-white mb-1">Frequency</label>
               <select
                 value={newPrescription.frequency}
                 onChange={(e) => setNewPrescription({...newPrescription, frequency: e.target.value})}
-                className="w-full border border-gray-300 rounded-md px-3 py-2"
+                className="w-full bg-white/10 backdrop-blur-xl border border-white/20 rounded-xl px-3 py-2 text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent"
               >
-                <option value="">Select frequency</option>
-                <option value="Once daily">Once daily</option>
-                <option value="Twice daily">Twice daily</option>
-                <option value="Three times daily">Three times daily</option>
-                <option value="Four times daily">Four times daily</option>
-                <option value="Every 8 hours">Every 8 hours</option>
-                <option value="As needed">As needed</option>
+                <option value="" className="bg-gray-800 text-white">Select frequency</option>
+                <option value="Once daily" className="bg-gray-800 text-white">Once daily</option>
+                <option value="Twice daily" className="bg-gray-800 text-white">Twice daily</option>
+                <option value="Three times daily" className="bg-gray-800 text-white">Three times daily</option>
+                <option value="Four times daily" className="bg-gray-800 text-white">Four times daily</option>
+                <option value="Every 8 hours" className="bg-gray-800 text-white">Every 8 hours</option>
+                <option value="As needed" className="bg-gray-800 text-white">As needed</option>
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Duration</label>
+              <label className="block text-sm font-medium text-white mb-1">Duration</label>
               <input
                 type="text"
                 value={newPrescription.duration}
                 onChange={(e) => setNewPrescription({...newPrescription, duration: e.target.value})}
-                className="w-full border border-gray-300 rounded-md px-3 py-2"
+                className="w-full bg-white/10 backdrop-blur-xl border border-white/20 rounded-xl px-3 py-2 text-white placeholder-white/50 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                 placeholder="e.g., 7 days, 30 days"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Refills Allowed</label>
+              <label className="block text-sm font-medium text-white mb-1">Refills Allowed</label>
               <input
                 type="number"
                 min="0"
                 max="10"
                 value={newPrescription.refillsAllowed}
                 onChange={(e) => setNewPrescription({...newPrescription, refillsAllowed: parseInt(e.target.value) || 0})}
-                className="w-full border border-gray-300 rounded-md px-3 py-2"
+                className="w-full bg-white/10 backdrop-blur-xl border border-white/20 rounded-xl px-3 py-2 text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent"
               />
             </div>
             <div className="md:col-span-2">
-              <label className="block text-sm font-medium text-gray-700 mb-1">Instructions</label>
+              <label className="block text-sm font-medium text-white mb-1">Instructions</label>
               <textarea
                 value={newPrescription.instructions}
                 onChange={(e) => setNewPrescription({...newPrescription, instructions: e.target.value})}
-                className="w-full border border-gray-300 rounded-md px-3 py-2"
+                className="w-full bg-white/10 backdrop-blur-xl border border-white/20 rounded-xl px-3 py-2 text-white placeholder-white/50 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                 rows={3}
                 placeholder="Special instructions for the patient..."
               />
@@ -390,13 +390,13 @@ const PrescriptionManager: React.FC = () => {
           <div className="flex space-x-3 mt-4">
             <button
               onClick={handleCreatePrescription}
-              className="bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700"
+              className="bg-purple-500/20 text-purple-400 px-4 py-2 rounded-xl hover:bg-purple-500/30 backdrop-blur-xl border border-purple-500/20 transition-all duration-200"
             >
               Create Prescription
             </button>
             <button
               onClick={() => setShowCreateForm(false)}
-              className="bg-gray-300 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-400"
+              className="bg-white/10 text-white/80 px-4 py-2 rounded-xl hover:bg-white/20 backdrop-blur-xl border border-white/20 transition-all duration-200"
             >
               Cancel
             </button>
@@ -407,7 +407,7 @@ const PrescriptionManager: React.FC = () => {
       {/* Prescriptions Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredPrescriptions.map((prescription) => (
-          <div key={prescription.id} className="bg-white rounded-lg border hover:shadow-md transition-shadow">
+          <div key={prescription.id} className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-xl hover:bg-white/15 transition-all duration-300 shadow-lg">
             <div className="p-4">
               <div className="flex justify-between items-start mb-3">
                 <div className="flex items-center space-x-2">
@@ -416,15 +416,15 @@ const PrescriptionManager: React.FC = () => {
                     {prescription.status}
                   </span>
                 </div>
-                <div className="text-right text-sm text-gray-500">
+                <div className="text-right text-sm text-white/70">
                   {prescription.refillsAllowed - prescription.refillsUsed} refills left
                 </div>
               </div>
 
-              <h4 className="text-lg font-semibold text-purple-900 mb-1">{prescription.medication}</h4>
-              <p className="text-sm text-gray-600 mb-2">{prescription.dosage} - {prescription.frequency}</p>
+              <h4 className="text-lg font-semibold text-white mb-1">{prescription.medication}</h4>
+              <p className="text-sm text-white/80 mb-2">{prescription.dosage} - {prescription.frequency}</p>
               
-              <div className="space-y-1 text-sm text-gray-500 mb-4">
+              <div className="space-y-1 text-sm text-white/70 mb-4">
                 <div>📅 {prescription.startDate} to {prescription.endDate}</div>
                 <div>👨‍⚕️ {prescription.prescribedBy}</div>
                 {user?.role !== 'patient' && (
@@ -436,23 +436,23 @@ const PrescriptionManager: React.FC = () => {
               </div>
 
               {prescription.instructions && (
-                <div className="bg-purple-50 rounded p-2 mb-4">
-                  <div className="text-xs text-purple-600 mb-1">Instructions:</div>
-                  <div className="text-xs text-purple-800">{prescription.instructions}</div>
+                <div className="bg-purple-500/20 border border-purple-500/30 rounded-lg p-2 mb-4 backdrop-blur-xl">
+                  <div className="text-xs text-purple-300 mb-1">Instructions:</div>
+                  <div className="text-xs text-purple-200">{prescription.instructions}</div>
                 </div>
               )}
 
               <div className="flex space-x-2">
                 <button
                   onClick={() => setSelectedPrescription(prescription)}
-                  className="flex-1 bg-purple-50 text-purple-600 px-3 py-2 rounded-md hover:bg-purple-100 text-sm font-medium"
+                  className="flex-1 bg-purple-500/20 text-purple-400 px-3 py-2 rounded-lg hover:bg-purple-500/30 text-sm font-medium border border-purple-500/30 backdrop-blur-xl transition-all duration-200"
                 >
                   View Details
                 </button>
                 {canWrite && prescription.status === 'active' && prescription.refillsUsed < prescription.refillsAllowed && (
                   <button
                     onClick={() => handleRefill(prescription.id)}
-                    className="bg-green-50 text-green-600 px-3 py-2 rounded-md hover:bg-green-100 text-sm font-medium"
+                    className="bg-green-500/20 text-green-400 px-3 py-2 rounded-lg hover:bg-green-500/30 text-sm font-medium border border-green-500/30 backdrop-blur-xl transition-all duration-200"
                   >
                     Refill
                   </button>
@@ -464,13 +464,13 @@ const PrescriptionManager: React.FC = () => {
       </div>
 
       {filteredPrescriptions.length === 0 && (
-        <div className="text-center py-8 text-gray-500">
-          <svg className="h-12 w-12 mx-auto mb-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div className="text-center py-8 text-white/70">
+          <svg className="h-12 w-12 mx-auto mb-4 text-white/50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.917l-.818.68a6 6 0 01-3.86.917l-2.387.477a2 2 0 00-1.022.547L3.5 15.5a2 2 0 00-.5 1.328V19a2 2 0 002 2h14a2 2 0 002-2v-2.172a2 2 0 00-.5-1.328l-.572-.572z" />
           </svg>
           <p>No prescriptions found</p>
           {searchTerm && (
-            <p className="text-sm">Try adjusting your search criteria</p>
+            <p className="text-sm text-white/50">Try adjusting your search criteria</p>
           )}
         </div>
       )}
