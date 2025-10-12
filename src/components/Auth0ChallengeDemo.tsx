@@ -187,11 +187,11 @@ ${result}
 
   if (!isAuthenticated) {
     return (
-      <div className="bg-white rounded-lg shadow-md p-6">
-        <h2 className="text-2xl font-bold text-gray-800 mb-4">
+      <div className="bg-white/10 backdrop-blur-xl rounded-2xl border border-white/20 p-6">
+        <h2 className="text-2xl font-bold text-white mb-4">
           🏆 Auth0 for AI Agents Challenge Demo
         </h2>
-        <p className="text-gray-600">
+        <p className="text-white/70">
           Please log in to see the demo of all three Auth0 AI pillars in action.
         </p>
       </div>
@@ -199,34 +199,34 @@ ${result}
   }
 
   return (
-    <div className="bg-white rounded-lg shadow-md p-6">
+    <div className="bg-white/10 backdrop-blur-xl rounded-2xl border border-white/20 p-6">
       <div className="mb-6">
-        <h2 className="text-2xl font-bold text-gray-800 mb-2">
+        <h2 className="text-2xl font-bold text-white mb-2">
           🏆 Auth0 for AI Agents Challenge Demo
         </h2>
-        <p className="text-gray-600">
+        <p className="text-white/70">
           Interactive demonstration of the three core Auth0 AI pillars working together in a medical AI system.
         </p>
         
         {/* Current Role Debug */}
-        <div className="mt-4 p-3 bg-gray-100 rounded-lg">
+        <div className="mt-4 p-3 bg-black/20 backdrop-blur-xl rounded-xl border border-white/10">
           <div className="text-sm flex items-center justify-between">
             <div>
-              <strong>🔍 Current Session:</strong> {user?.email} | 
-              <span className={`ml-2 px-2 py-1 rounded text-xs font-semibold ${
-                user?.role === 'admin' ? 'bg-purple-100 text-purple-800' :
-                user?.role === 'doctor' ? 'bg-green-100 text-green-800' :
-                'bg-blue-100 text-blue-800'
+              <strong className="text-white">🔍 Current Session:</strong> <span className="text-white/80">{user?.email}</span> | 
+              <span className={`ml-2 px-2 py-1 rounded-lg text-xs font-semibold backdrop-blur-xl border ${
+                user?.role === 'admin' ? 'bg-purple-500/20 text-purple-400 border-purple-500/30' :
+                user?.role === 'doctor' ? 'bg-green-500/20 text-green-400 border-green-500/30' :
+                'bg-blue-500/20 text-blue-400 border-blue-500/30'
               }`}>
                 {user?.role?.toUpperCase()} ROLE
               </span>
             </div>
             <button
               onClick={() => window.location.href = `/${user?.role}-dashboard`}
-              className={`px-3 py-1 rounded text-xs font-semibold transition-colors ${
-                user?.role === 'admin' ? 'bg-purple-600 text-white hover:bg-purple-700' :
-                user?.role === 'doctor' ? 'bg-green-600 text-white hover:bg-green-700' :
-                'bg-blue-600 text-white hover:bg-blue-700'
+              className={`px-3 py-1 rounded-xl text-xs font-semibold transition-all duration-200 backdrop-blur-xl border ${
+                user?.role === 'admin' ? 'bg-purple-500/20 text-purple-400 border-purple-500/30 hover:bg-purple-500/30' :
+                user?.role === 'doctor' ? 'bg-green-500/20 text-green-400 border-green-500/30 hover:bg-green-500/30' :
+                'bg-blue-500/20 text-blue-400 border-blue-500/30 hover:bg-blue-500/30'
               }`}
             >
               Go to {user?.role} Dashboard →
@@ -236,11 +236,11 @@ ${result}
       </div>
 
       {/* Auth0 Professional Role Management */}
-      <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
-        <h3 className="text-sm font-semibold text-blue-800 mb-2">
+      <div className="bg-blue-500/10 backdrop-blur-xl border border-blue-500/20 rounded-xl p-4 mb-6">
+        <h3 className="text-sm font-semibold text-blue-400 mb-2">
           🏆 Professional Auth0 Role Management
         </h3>
-        <p className="text-xs text-blue-700">
+        <p className="text-xs text-blue-300">
           Your role is determined by Auth0's Role-Based Access Control (RBAC). 
           Contact your system administrator to change roles or access levels.
         </p>
@@ -251,48 +251,48 @@ ${result}
         <button
           onClick={demoUserAuthentication}
           disabled={isLoading}
-          className={`p-4 rounded-lg border-2 transition-colors ${
+          className={`p-4 rounded-xl border-2 transition-all duration-200 backdrop-blur-xl ${
             activeDemo === 'auth'
-              ? 'bg-blue-50 border-blue-500 text-blue-800'
-              : 'bg-gray-50 border-gray-200 hover:bg-gray-100'
+              ? 'bg-blue-500/20 border-blue-400/40 text-blue-300 shadow-lg shadow-blue-500/10'
+              : 'bg-white/10 border-white/20 text-white/80 hover:bg-white/15 hover:border-white/30'
           }`}
         >
           <div className="text-center">
             <div className="text-2xl mb-2">🔐</div>
             <div className="font-semibold">1. User Authentication</div>
-            <div className="text-sm text-gray-600">Secure the human prompting the agent</div>
+            <div className="text-sm text-white/60">Secure the human prompting the agent</div>
           </div>
         </button>
 
         <button
           onClick={demoTokenVault}
           disabled={isLoading}
-          className={`p-4 rounded-lg border-2 transition-colors ${
+          className={`p-4 rounded-xl border-2 transition-all duration-200 backdrop-blur-xl ${
             activeDemo === 'token-vault'
-              ? 'bg-green-50 border-green-500 text-green-800'
-              : 'bg-gray-50 border-gray-200 hover:bg-gray-100'
+              ? 'bg-green-500/20 border-green-400/40 text-green-300 shadow-lg shadow-green-500/10'
+              : 'bg-white/10 border-white/20 text-white/80 hover:bg-white/15 hover:border-white/30'
           }`}
         >
           <div className="text-center">
             <div className="text-2xl mb-2">🔑</div>
             <div className="font-semibold">2. Token Vault</div>
-            <div className="text-sm text-gray-600">Control tools & API access</div>
+            <div className="text-sm text-white/60">Control tools & API access</div>
           </div>
         </button>
 
         <button
           onClick={demoFineGrainedAuth}
           disabled={isLoading}
-          className={`p-4 rounded-lg border-2 transition-colors ${
+          className={`p-4 rounded-xl border-2 transition-all duration-200 backdrop-blur-xl ${
             activeDemo === 'fga'
-              ? 'bg-purple-50 border-purple-500 text-purple-800'
-              : 'bg-gray-50 border-gray-200 hover:bg-gray-100'
+              ? 'bg-purple-500/20 border-purple-400/40 text-purple-300 shadow-lg shadow-purple-500/10'
+              : 'bg-white/10 border-white/20 text-white/80 hover:bg-white/15 hover:border-white/30'
           }`}
         >
           <div className="text-center">
             <div className="text-2xl mb-2">🛡️</div>
             <div className="font-semibold">3. Fine-Grained Auth</div>
-            <div className="text-sm text-gray-600">Limit knowledge & RAG access</div>
+            <div className="text-sm text-white/60">Limit knowledge & RAG access</div>
           </div>
         </button>
       </div>
@@ -300,26 +300,26 @@ ${result}
       {/* Loading State */}
       {isLoading && (
         <div className="flex items-center justify-center p-8">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-          <span className="ml-3 text-gray-600">Running Auth0 AI demo...</span>
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-400"></div>
+          <span className="ml-3 text-white/80">Running Auth0 AI demo...</span>
         </div>
       )}
 
       {/* Demo Results */}
       {demoResults && !isLoading && (
-        <div className="bg-gray-50 rounded-lg p-6">
-          <pre className="whitespace-pre-wrap text-sm text-gray-800 font-mono">
+        <div className="bg-black/20 backdrop-blur-xl rounded-xl border border-white/10 p-6">
+          <pre className="whitespace-pre-wrap text-sm text-white/90 font-mono">
             {demoResults}
           </pre>
         </div>
       )}
 
       {/* Challenge Info */}
-      <div className="mt-6 p-4 bg-blue-50 rounded-lg">
-        <h3 className="font-semibold text-blue-800 mb-2">
+      <div className="mt-6 p-4 bg-blue-500/10 backdrop-blur-xl rounded-xl border border-blue-500/20">
+        <h3 className="font-semibold text-blue-400 mb-2">
           🎯 Auth0 for AI Agents Challenge Compliance
         </h3>
-        <p className="text-blue-700 text-sm">
+        <p className="text-blue-300 text-sm">
           This MedSecureAI application demonstrates all three required pillars of Auth0 for AI Agents
           in a practical healthcare use case, solving real-world problems around secure medical AI interactions.
         </p>
