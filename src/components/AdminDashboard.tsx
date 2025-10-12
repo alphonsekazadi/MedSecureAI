@@ -2,6 +2,10 @@ import { useState } from 'react';
 import { useAuth } from '../hooks/useAuth';
 import Auth0ChallengeDemo from './Auth0ChallengeDemo';
 import SecureAIChat from './SecureAIChat';
+import UserManagement from './UserManagement';
+import AppointmentManager from './AppointmentManager';
+import MedicalRecords from './MedicalRecords';
+import PrescriptionManager from './PrescriptionManager';
 
 const AdminDashboard = () => {
   const { user, logout } = useAuth();
@@ -32,7 +36,13 @@ const AdminDashboard = () => {
                   alt={user?.name || 'Admin'}
                 />
                 <span className="text-sm font-medium text-gray-700">{user?.name || 'Admin'}</span>
-                <span className="px-2 py-1 text-xs bg-purple-100 text-purple-800 rounded-full">Admin</span>
+                <span className={`px-2 py-1 text-xs rounded-full ${
+                  user?.role === 'admin' ? 'bg-purple-100 text-purple-800' :
+                  user?.role === 'doctor' ? 'bg-green-100 text-green-800' :
+                  'bg-blue-100 text-blue-800'
+                }`}>
+                  {user?.role?.toUpperCase() || 'ADMIN'}
+                </span>
               </div>
               <button
                 onClick={logout}
@@ -64,6 +74,9 @@ const AdminDashboard = () => {
                 { id: 'overview', label: 'System Overview', icon: '📊' },
                 { id: 'chat', label: 'AI Assistant', icon: '🤖' },
                 { id: 'users', label: 'User Management', icon: '👥' },
+                { id: 'appointments', label: 'All Appointments', icon: '📅' },
+                { id: 'records', label: 'All Records', icon: '📋' },
+                { id: 'prescriptions', label: 'All Prescriptions', icon: '💊' },
                 { id: 'security', label: 'Security', icon: '🔒' },
                 { id: 'challenge-demo', label: 'Auth0 Challenge Demo', icon: '🏆' },
               ].map((tab) => (
@@ -247,11 +260,19 @@ const AdminDashboard = () => {
         )}
 
         {activeTab === 'users' && (
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">User Management</h3>
-            <p className="text-gray-600 mb-4">Manage system users, roles, and permissions.</p>
-            <div className="text-sm text-gray-500">User management features coming soon...</div>
-          </div>
+          <UserManagement />
+        )}
+
+        {activeTab === 'appointments' && (
+          <AppointmentManager />
+        )}
+
+        {activeTab === 'records' && (
+          <MedicalRecords />
+        )}
+
+        {activeTab === 'prescriptions' && (
+          <PrescriptionManager />
         )}
 
         {activeTab === 'security' && (

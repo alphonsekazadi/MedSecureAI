@@ -3,11 +3,13 @@
 
 import React, { useState, useEffect } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
+import { useAuth } from '../hooks/useAuth';
 import { medicalRAGService } from '../services/medicalRAGService';
 import { executeMedicalTool } from '../services/advancedMedicalTools';
 
 export const Auth0ChallengeDemo: React.FC = () => {
-  const { user, isAuthenticated } = useAuth0();
+  const { isAuthenticated } = useAuth0();
+  const { user } = useAuth();
   const [activeDemo, setActiveDemo] = useState<'auth' | 'token-vault' | 'fga' | null>(null);
   const [demoResults, setDemoResults] = useState<string>('');
   const [isLoading, setIsLoading] = useState(false);
@@ -24,7 +26,7 @@ export const Auth0ChallengeDemo: React.FC = () => {
     if (!user) return;
     
     const userId = user.sub || 'anonymous';
-    const userRole = user.role || 'patient';
+    const userRole = user.role; // Now using the correct role from useAuth hook
     
     const access = await medicalRAGService.getUserKnowledgeAccess(userId, userRole);
     setKnowledgeAccess(access);
@@ -46,7 +48,7 @@ export const Auth0ChallengeDemo: React.FC = () => {
 • User ID: ${user?.sub}
 • Email: ${user?.email}
 • Name: ${user?.name}
-• Role: ${user?.role || 'patient'}
+• Role: ${user?.role}
 • Authentication Method: Auth0 React SDK
 • Session Status: Active and Secure
 
@@ -120,7 +122,7 @@ ${result}
       if (!user) throw new Error('User not authenticated');
       
       const userId = user.sub || 'anonymous';
-      const userRole = user.role || 'patient';
+      const userRole = user.role;
 
       // Test different medical queries to show role-based knowledge filtering
       const testQueries = [
@@ -205,6 +207,32 @@ ${result}
         <p className="text-gray-600">
           Interactive demonstration of the three core Auth0 AI pillars working together in a medical AI system.
         </p>
+        
+        {/* Current Role Debug */}
+        <div className="mt-4 p-3 bg-gray-100 rounded-lg">
+          <div className="text-sm flex items-center justify-between">
+            <div>
+              <strong>🔍 Current Session:</strong> {user?.email} | 
+              <span className={`ml-2 px-2 py-1 rounded text-xs font-semibold ${
+                user?.role === 'admin' ? 'bg-purple-100 text-purple-800' :
+                user?.role === 'doctor' ? 'bg-green-100 text-green-800' :
+                'bg-blue-100 text-blue-800'
+              }`}>
+                {user?.role?.toUpperCase()} ROLE
+              </span>
+            </div>
+            <button
+              onClick={() => window.location.href = `/${user?.role}-dashboard`}
+              className={`px-3 py-1 rounded text-xs font-semibold transition-colors ${
+                user?.role === 'admin' ? 'bg-purple-600 text-white hover:bg-purple-700' :
+                user?.role === 'doctor' ? 'bg-green-600 text-white hover:bg-green-700' :
+                'bg-blue-600 text-white hover:bg-blue-700'
+              }`}
+            >
+              Go to {user?.role} Dashboard →
+            </button>
+          </div>
+        </div>
       </div>
 
       {/* Auth0 Professional Role Management */}
