@@ -2,6 +2,9 @@ import { useState } from 'react';
 import { useAuth } from '../hooks/useAuth';
 import Auth0ChallengeDemo from './Auth0ChallengeDemo';
 import SecureAIChat from './SecureAIChat';
+import AppointmentManager from './AppointmentManager';
+import MedicalRecords from './MedicalRecords';
+import PrescriptionManager from './PrescriptionManager';
 
 const DoctorDashboard = () => {
   const { user, logout } = useAuth();
@@ -31,7 +34,13 @@ const DoctorDashboard = () => {
                   alt={user?.name || 'Doctor'}
                 />
                 <span className="text-sm font-medium text-gray-700">{user?.name || 'Doctor'}</span>
-                <span className="px-2 py-1 text-xs bg-green-100 text-green-800 rounded-full">Doctor</span>
+                <span className={`px-2 py-1 text-xs rounded-full ${
+                  user?.role === 'admin' ? 'bg-purple-100 text-purple-800' :
+                  user?.role === 'doctor' ? 'bg-green-100 text-green-800' :
+                  'bg-blue-100 text-blue-800'
+                }`}>
+                  {user?.role?.toUpperCase() || 'DOCTOR'}
+                </span>
               </div>
               <button
                 onClick={logout}
@@ -62,6 +71,7 @@ const DoctorDashboard = () => {
               {[
                 { id: 'overview', label: 'Patient Overview', icon: '📊' },
                 { id: 'chat', label: 'AI Assistant', icon: '🤖' },
+                { id: 'appointments', label: 'Appointments', icon: '📅' },
                 { id: 'patients', label: 'Patient Records', icon: '📋' },
                 { id: 'prescriptions', label: 'Prescriptions', icon: '💊' },
                 { id: 'challenge-demo', label: 'Auth0 Challenge Demo', icon: '🏆' },
@@ -134,20 +144,16 @@ const DoctorDashboard = () => {
           <SecureAIChat />
         )}
 
+        {activeTab === 'appointments' && (
+          <AppointmentManager />
+        )}
+
         {activeTab === 'patients' && (
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Patient Records</h3>
-            <p className="text-gray-600 mb-4">Access and manage patient medical records.</p>
-            <div className="text-sm text-gray-500">Patient records features coming soon...</div>
-          </div>
+          <MedicalRecords />
         )}
 
         {activeTab === 'prescriptions' && (
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Prescriptions</h3>
-            <p className="text-gray-600 mb-4">Manage prescriptions and medication history.</p>
-            <div className="text-sm text-gray-500">Prescription management features coming soon...</div>
-          </div>
+          <PrescriptionManager />
         )}
 
         {activeTab === 'challenge-demo' && (
