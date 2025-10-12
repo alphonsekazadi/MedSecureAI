@@ -6,6 +6,7 @@ import UserManagement from './UserManagement';
 import AppointmentManager from './AppointmentManager';
 import MedicalRecords from './MedicalRecords';
 import PrescriptionManager from './PrescriptionManager';
+import MedicalKnowledgeBrowser from './MedicalKnowledgeBrowser';
 
 const AdminDashboard = () => {
   const { user, logout } = useAuth();
@@ -80,6 +81,7 @@ const AdminDashboard = () => {
             <nav className="flex flex-wrap gap-2">
               {[
                 { id: 'overview', label: 'System Overview', icon: '📊' },
+                { id: 'knowledge', label: 'Medical Knowledge', icon: '📚' },
                 { id: 'chat', label: 'AI Assistant', icon: '🤖' },
                 { id: 'users', label: 'User Management', icon: '👥' },
                 { id: 'appointments', label: 'All Appointments', icon: '📅' },
@@ -261,6 +263,10 @@ const AdminDashboard = () => {
           </div>
         </div>
         </div>
+        )}
+
+        {activeTab === 'knowledge' && (
+          <MedicalKnowledgeBrowser />
         )}
 
         {activeTab === 'chat' && (

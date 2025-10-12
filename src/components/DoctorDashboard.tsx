@@ -5,6 +5,7 @@ import SecureAIChat from './SecureAIChat';
 import AppointmentManager from './AppointmentManager';
 import MedicalRecords from './MedicalRecords';
 import PrescriptionManager from './PrescriptionManager';
+import MedicalKnowledgeBrowser from './MedicalKnowledgeBrowser';
 
 const DoctorDashboard = () => {
   const { user, logout } = useAuth();
@@ -110,6 +111,7 @@ const DoctorDashboard = () => {
             <nav className="flex space-x-1 overflow-x-auto">
               {[
                 { id: 'overview', label: 'Patient Overview', icon: '📊' },
+                { id: 'knowledge', label: 'Medical Knowledge', icon: '📚' },
                 { id: 'chat', label: 'AI Assistant', icon: '🤖' },
                 { id: 'appointments', label: 'Appointments', icon: '📅' },
                 { id: 'patients', label: 'Patient Records', icon: '📋' },
@@ -178,6 +180,10 @@ const DoctorDashboard = () => {
             </div>
           </div>
         </div>
+        )}
+
+        {activeTab === 'knowledge' && (
+          <MedicalKnowledgeBrowser />
         )}
 
         {activeTab === 'chat' && (
