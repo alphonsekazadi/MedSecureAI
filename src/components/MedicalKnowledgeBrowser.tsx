@@ -340,7 +340,6 @@ const MedicalKnowledgeBrowser: React.FC = () => {
                 <div className="max-h-64 overflow-y-auto">
                   <ReactMarkdown 
                     remarkPlugins={[remarkGfm]}
-                    className="prose prose-invert prose-sm max-w-none"
                     components={{
                       h1: ({children}) => (
                         <h1 className="text-lg font-bold text-white mb-3 pb-2 border-b border-white/20">
