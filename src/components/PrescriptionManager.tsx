@@ -216,10 +216,10 @@ const PrescriptionManager: React.FC = () => {
       {/* Header */}
       <div className="flex justify-between items-center">
         <div>
-          <h3 className="text-2xl font-semibold text-gray-900">
+          <h3 className="text-2xl font-semibold text-white">
             {user?.role === 'patient' ? 'My Prescriptions' : 'Prescription Management'}
           </h3>
-          <p className="text-gray-600">
+          <p className="text-white/70">
             {user?.role === 'patient' 
               ? 'View your current and past prescriptions'
               : 'Manage patient prescriptions and medications'
@@ -230,7 +230,7 @@ const PrescriptionManager: React.FC = () => {
         {canWrite && (
           <button
             onClick={() => setShowCreateForm(true)}
-            className="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 flex items-center space-x-2"
+            className="bg-purple-500/20 text-purple-400 px-4 py-2 rounded-xl hover:bg-purple-500/30 backdrop-blur-xl border border-purple-500/20 flex items-center space-x-2 transition-all duration-200"
           >
             <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
