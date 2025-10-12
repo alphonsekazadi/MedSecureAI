@@ -413,13 +413,13 @@ const MedicalKnowledgeBrowser: React.FC = () => {
                           </table>
                         </div>
                       ),
-                      th: ({children}) => (
-                        <th className="border border-white/20 bg-white/10 px-2 py-1 text-left text-white font-medium text-xs">
+                      th: ({children, ...props}) => (
+                        <th className="border border-white/20 bg-white/10 px-2 py-1 text-left text-white font-medium text-xs" {...props}>
                           {children}
                         </th>
                       ),
-                      td: ({children}) => (
-                        <td className="border border-white/20 px-2 py-1 text-white/80 text-xs">
+                      td: ({children, ...props}) => (
+                        <td className="border border-white/20 px-2 py-1 text-white/80 text-xs" {...props}>
                           {children}
                         </td>
                       ),
