@@ -3,6 +3,8 @@ import { useAuth } from '../hooks/useAuth';
 import { medicalKnowledgeService } from '../services/medicalKnowledgeService';
 import type { MedicalKnowledgeItem, UserContext } from '../services/medicalKnowledgeService';
 import { Search, Book, Shield, Lock, Eye, AlertTriangle, CheckCircle } from 'lucide-react';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 const MedicalKnowledgeBrowser: React.FC = () => {
   const { user } = useAuth();
@@ -334,13 +336,105 @@ const MedicalKnowledgeBrowser: React.FC = () => {
 
               {/* Content Preview */}
               <div className="bg-white/5 border border-white/10 rounded-lg p-4">
-                <h4 className="text-sm font-medium text-white mb-2">Content Preview</h4>
-                <p className="text-white/70 text-sm">
-                  This would display the full medical knowledge content from: {selectedItem.filePath}
-                </p>
-                <p className="text-white/50 text-xs mt-2">
-                  In a production environment, this would show the parsed markdown content with proper medical formatting.
-                </p>
+                <h4 className="text-sm font-medium text-white mb-3">Medical Content</h4>
+                <div className="max-h-64 overflow-y-auto">
+                  <ReactMarkdown 
+                    remarkPlugins={[remarkGfm]}
+                    className="prose prose-invert prose-sm max-w-none"
+                    components={{
+                      h1: ({children}) => (
+                        <h1 className="text-lg font-bold text-white mb-3 pb-2 border-b border-white/20">
+                          {children}
+                        </h1>
+                      ),
+                      h2: ({children}) => (
+                        <h2 className="text-base font-semibold text-white mb-2 mt-4">
+                          {children}
+                        </h2>
+                      ),
+                      h3: ({children}) => (
+                        <h3 className="text-sm font-medium text-white mb-2 mt-3">
+                          {children}
+                        </h3>
+                      ),
+                      h4: ({children}) => (
+                        <h4 className="text-sm font-medium text-white/90 mb-1 mt-2">
+                          {children}
+                        </h4>
+                      ),
+                      p: ({children}) => (
+                        <p className="text-white/80 text-sm mb-2 leading-relaxed">
+                          {children}
+                        </p>
+                      ),
+                      ul: ({children}) => (
+                        <ul className="text-white/80 text-sm mb-3 list-disc list-inside space-y-1">
+                          {children}
+                        </ul>
+                      ),
+                      ol: ({children}) => (
+                        <ol className="text-white/80 text-sm mb-3 list-decimal list-inside space-y-1">
+                          {children}
+                        </ol>
+                      ),
+                      li: ({children}) => (
+                        <li className="text-white/80 text-sm">
+                          {children}
+                        </li>
+                      ),
+                      strong: ({children}) => (
+                        <strong className="text-white font-semibold">
+                          {children}
+                        </strong>
+                      ),
+                      em: ({children}) => (
+                        <em className="text-white/90 italic">
+                          {children}
+                        </em>
+                      ),
+                      code: ({children}) => (
+                        <code className="bg-green-500/20 text-green-300 px-1.5 py-0.5 rounded text-xs border border-green-500/30">
+                          {children}
+                        </code>
+                      ),
+                      pre: ({children}) => (
+                        <pre className="bg-white/5 border border-white/10 rounded-lg p-3 mb-3 overflow-x-auto text-sm">
+                          {children}
+                        </pre>
+                      ),
+                      blockquote: ({children}) => (
+                        <blockquote className="border-l-4 border-blue-500 pl-3 my-3 text-white/80 italic">
+                          {children}
+                        </blockquote>
+                      ),
+                      table: ({children}) => (
+                        <div className="overflow-x-auto mb-3">
+                          <table className="w-full border-collapse border border-white/20 text-sm">
+                            {children}
+                          </table>
+                        </div>
+                      ),
+                      th: ({children}) => (
+                        <th className="border border-white/20 bg-white/10 px-2 py-1 text-left text-white font-medium text-xs">
+                          {children}
+                        </th>
+                      ),
+                      td: ({children}) => (
+                        <td className="border border-white/20 px-2 py-1 text-white/80 text-xs">
+                          {children}
+                        </td>
+                      ),
+                      hr: () => (
+                        <hr className="border-white/20 my-4" />
+                      ),
+                    }}
+                  >
+                    {selectedItem.content}
+                  </ReactMarkdown>
+                </div>
+                <div className="mt-3 pt-2 border-t border-white/10 text-xs text-white/50">
+                  Source: {selectedItem.filePath} • Updated: {selectedItem.metadata.lastUpdated}
+                </div>
               </div>
             </div>
           ) : (
