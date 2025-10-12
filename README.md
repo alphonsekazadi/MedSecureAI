@@ -1,3 +1,5 @@
+
+<img width="1360" height="607" alt="MedSecureAI home" src="https://github.com/user-attachments/assets/e771d6a5-e04e-4181-8779-eaa7bd0167ce" />
 # 🏥 MedSecureAI - Healthcare AI with Advanced Security
 
 [![Auth0](https://img.shields.io/badge/Auth0-FGA%20Integrated-orange?logo=auth0)](https://auth0.com)
