@@ -147,10 +147,10 @@ const AppointmentManager: React.FC = () => {
       {/* Header */}
       <div className="flex justify-between items-center">
         <div>
-          <h3 className="text-2xl font-semibold text-gray-900">
+          <h3 className="text-2xl font-semibold text-white">
             {user?.role === 'patient' ? 'My Appointments' : 'Appointment Management'}
           </h3>
-          <p className="text-gray-600">
+          <p className="text-white/70">
             {user?.role === 'patient' 
               ? 'View and manage your medical appointments'
               : 'Manage patient appointments and scheduling'
@@ -161,7 +161,7 @@ const AppointmentManager: React.FC = () => {
         {canWrite && (
           <button
             onClick={() => setShowCreateForm(true)}
-            className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 flex items-center space-x-2"
+            className="bg-blue-500/20 text-blue-400 px-4 py-2 rounded-xl hover:bg-blue-500/30 backdrop-blur-xl border border-blue-500/20 flex items-center space-x-2 transition-all duration-200"
           >
             <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -173,25 +173,25 @@ const AppointmentManager: React.FC = () => {
 
       {/* Stats */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <div className="bg-white p-4 rounded-lg border">
-          <div className="text-sm text-gray-600">Total</div>
-          <div className="text-2xl font-bold text-gray-900">{appointments.length}</div>
+        <div className="bg-white/10 backdrop-blur-xl rounded-xl border border-white/20 p-4 hover:bg-white/15 transition-all duration-200">
+          <div className="text-sm text-white/60">Total</div>
+          <div className="text-2xl font-bold text-white">{appointments.length}</div>
         </div>
-        <div className="bg-white p-4 rounded-lg border">
-          <div className="text-sm text-gray-600">Scheduled</div>
-          <div className="text-2xl font-bold text-yellow-600">
+        <div className="bg-white/10 backdrop-blur-xl rounded-xl border border-white/20 p-4 hover:bg-white/15 transition-all duration-200">
+          <div className="text-sm text-white/60">Scheduled</div>
+          <div className="text-2xl font-bold text-yellow-400">
             {appointments.filter(a => a.status === 'scheduled').length}
           </div>
         </div>
-        <div className="bg-white p-4 rounded-lg border">
-          <div className="text-sm text-gray-600">Confirmed</div>
-          <div className="text-2xl font-bold text-blue-600">
+        <div className="bg-white/10 backdrop-blur-xl rounded-xl border border-white/20 p-4 hover:bg-white/15 transition-all duration-200">
+          <div className="text-sm text-white/60">Confirmed</div>
+          <div className="text-2xl font-bold text-blue-400">
             {appointments.filter(a => a.status === 'confirmed').length}
           </div>
         </div>
-        <div className="bg-white p-4 rounded-lg border">
-          <div className="text-sm text-gray-600">Completed</div>
-          <div className="text-2xl font-bold text-green-600">
+        <div className="bg-white/10 backdrop-blur-xl rounded-xl border border-white/20 p-4 hover:bg-white/15 transition-all duration-200">
+          <div className="text-sm text-white/60">Completed</div>
+          <div className="text-2xl font-bold text-green-400">
             {appointments.filter(a => a.status === 'completed').length}
           </div>
         </div>
@@ -199,76 +199,76 @@ const AppointmentManager: React.FC = () => {
 
       {/* Create Form */}
       {showCreateForm && (
-        <div className="bg-white p-6 rounded-lg border">
-          <h4 className="text-lg font-semibold mb-4">Create New Appointment</h4>
+        <div className="bg-white/10 backdrop-blur-xl rounded-xl border border-white/20 p-6">
+          <h4 className="text-lg font-semibold text-white mb-4">Create New Appointment</h4>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Patient Name</label>
+              <label className="block text-sm font-medium text-white mb-1">Patient Name</label>
               <input
                 type="text"
                 value={newAppointment.patientName}
                 onChange={(e) => setNewAppointment({...newAppointment, patientName: e.target.value})}
-                className="w-full border border-gray-300 rounded-md px-3 py-2"
+                className="w-full bg-white/10 backdrop-blur-xl border border-white/20 rounded-xl px-3 py-2 text-white placeholder-white/50 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 placeholder="Enter patient name"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Patient Email</label>
+              <label className="block text-sm font-medium text-white mb-1">Patient Email</label>
               <input
                 type="email"
                 value={newAppointment.patientEmail}
                 onChange={(e) => setNewAppointment({...newAppointment, patientEmail: e.target.value})}
-                className="w-full border border-gray-300 rounded-md px-3 py-2"
+                className="w-full bg-white/10 backdrop-blur-xl border border-white/20 rounded-xl px-3 py-2 text-white placeholder-white/50 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 placeholder="patient@email.com"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Doctor</label>
+              <label className="block text-sm font-medium text-white mb-1">Doctor</label>
               <input
                 type="text"
                 value={newAppointment.doctorName}
                 onChange={(e) => setNewAppointment({...newAppointment, doctorName: e.target.value})}
-                className="w-full border border-gray-300 rounded-md px-3 py-2"
+                className="w-full bg-white/10 backdrop-blur-xl border border-white/20 rounded-xl px-3 py-2 text-white placeholder-white/50 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 placeholder="Dr. Name"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Type</label>
+              <label className="block text-sm font-medium text-white mb-1">Type</label>
               <select
                 value={newAppointment.type}
                 onChange={(e) => setNewAppointment({...newAppointment, type: e.target.value})}
-                className="w-full border border-gray-300 rounded-md px-3 py-2"
+                className="w-full bg-white/10 backdrop-blur-xl border border-white/20 rounded-xl px-3 py-2 text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               >
-                <option value="consultation">Consultation</option>
-                <option value="follow-up">Follow-up</option>
-                <option value="specialist">Specialist</option>
-                <option value="emergency">Emergency</option>
+                <option value="consultation" className="bg-gray-800 text-white">Consultation</option>
+                <option value="follow-up" className="bg-gray-800 text-white">Follow-up</option>
+                <option value="specialist" className="bg-gray-800 text-white">Specialist</option>
+                <option value="emergency" className="bg-gray-800 text-white">Emergency</option>
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Date</label>
+              <label className="block text-sm font-medium text-white mb-1">Date</label>
               <input
                 type="date"
                 value={newAppointment.date}
                 onChange={(e) => setNewAppointment({...newAppointment, date: e.target.value})}
-                className="w-full border border-gray-300 rounded-md px-3 py-2"
+                className="w-full bg-white/10 backdrop-blur-xl border border-white/20 rounded-xl px-3 py-2 text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Time</label>
+              <label className="block text-sm font-medium text-white mb-1">Time</label>
               <input
                 type="time"
                 value={newAppointment.time}
                 onChange={(e) => setNewAppointment({...newAppointment, time: e.target.value})}
-                className="w-full border border-gray-300 rounded-md px-3 py-2"
+                className="w-full bg-white/10 backdrop-blur-xl border border-white/20 rounded-xl px-3 py-2 text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
             </div>
             <div className="md:col-span-2">
-              <label className="block text-sm font-medium text-gray-700 mb-1">Notes</label>
+              <label className="block text-sm font-medium text-white mb-1">Notes</label>
               <textarea
                 value={newAppointment.notes}
                 onChange={(e) => setNewAppointment({...newAppointment, notes: e.target.value})}
-                className="w-full border border-gray-300 rounded-md px-3 py-2"
+                className="w-full bg-white/10 backdrop-blur-xl border border-white/20 rounded-xl px-3 py-2 text-white placeholder-white/50 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 rows={3}
                 placeholder="Additional notes..."
               />
@@ -277,13 +277,13 @@ const AppointmentManager: React.FC = () => {
           <div className="flex space-x-3 mt-4">
             <button
               onClick={handleCreateAppointment}
-              className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
+              className="bg-blue-500/20 text-blue-400 px-4 py-2 rounded-xl hover:bg-blue-500/30 backdrop-blur-xl border border-blue-500/20 transition-all duration-200"
             >
               Create Appointment
             </button>
             <button
               onClick={() => setShowCreateForm(false)}
-              className="bg-gray-300 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-400"
+              className="bg-white/10 text-white/80 px-4 py-2 rounded-xl hover:bg-white/20 backdrop-blur-xl border border-white/20 transition-all duration-200"
             >
               Cancel
             </button>
@@ -292,50 +292,50 @@ const AppointmentManager: React.FC = () => {
       )}
 
       {/* Appointments List */}
-      <div className="bg-white rounded-lg border">
+      <div className="bg-white/10 backdrop-blur-xl rounded-xl border border-white/20">
         <div className="overflow-x-auto">
           <table className="w-full">
-            <thead className="bg-gray-50">
+            <thead className="bg-black/20 backdrop-blur-xl">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-white/60 uppercase tracking-wider">
                   Patient
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-white/60 uppercase tracking-wider">
                   Doctor
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-white/60 uppercase tracking-wider">
                   Date & Time
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-white/60 uppercase tracking-wider">
                   Type
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-white/60 uppercase tracking-wider">
                   Status
                 </th>
                 {(canWrite || canDelete) && (
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-white/60 uppercase tracking-wider">
                     Actions
                   </th>
                 )}
               </tr>
             </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
+            <tbody className="divide-y divide-white/10">
               {appointments.map((appointment) => (
-                <tr key={appointment.id} className="hover:bg-gray-50">
+                <tr key={appointment.id} className="hover:bg-white/5 transition-colors duration-200">
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div>
-                      <div className="text-sm font-medium text-gray-900">{appointment.patientName}</div>
-                      <div className="text-sm text-gray-500">{appointment.patientEmail}</div>
+                      <div className="text-sm font-medium text-white">{appointment.patientName}</div>
+                      <div className="text-sm text-white/60">{appointment.patientEmail}</div>
                     </div>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-white">
                     {appointment.doctorName}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm text-gray-900">{appointment.date}</div>
-                    <div className="text-sm text-gray-500">{appointment.time}</div>
+                    <div className="text-sm text-white">{appointment.date}</div>
+                    <div className="text-sm text-white/60">{appointment.time}</div>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-white">
                     {appointment.type}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
@@ -349,13 +349,13 @@ const AppointmentManager: React.FC = () => {
                         <div className="inline-flex space-x-1">
                           <button
                             onClick={() => handleUpdateStatus(appointment.id, 'confirmed')}
-                            className="text-blue-600 hover:text-blue-900 text-xs bg-blue-50 px-2 py-1 rounded"
+                            className="text-blue-400 hover:text-blue-300 text-xs bg-blue-500/20 backdrop-blur-xl border border-blue-500/20 px-2 py-1 rounded-lg transition-all duration-200"
                           >
                             Confirm
                           </button>
                           <button
                             onClick={() => handleUpdateStatus(appointment.id, 'completed')}
-                            className="text-green-600 hover:text-green-900 text-xs bg-green-50 px-2 py-1 rounded"
+                            className="text-green-400 hover:text-green-300 text-xs bg-green-500/20 backdrop-blur-xl border border-green-500/20 px-2 py-1 rounded-lg transition-all duration-200"
                           >
                             Complete
                           </button>
@@ -364,7 +364,7 @@ const AppointmentManager: React.FC = () => {
                       {canDelete && (
                         <button
                           onClick={() => handleDeleteAppointment(appointment.id)}
-                          className="text-red-600 hover:text-red-900 text-xs bg-red-50 px-2 py-1 rounded ml-1"
+                          className="text-red-400 hover:text-red-300 text-xs bg-red-500/20 backdrop-blur-xl border border-red-500/20 px-2 py-1 rounded-lg ml-1 transition-all duration-200"
                         >
                           Delete
                         </button>
@@ -378,15 +378,15 @@ const AppointmentManager: React.FC = () => {
         </div>
         
         {appointments.length === 0 && (
-          <div className="text-center py-8 text-gray-500">
-            <svg className="h-12 w-12 mx-auto mb-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div className="text-center py-8 text-white/60">
+            <svg className="h-12 w-12 mx-auto mb-4 text-white/30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3a2 2 0 012-2h4a2 2 0 012 2v4m-6 0h6v1a2 2 0 01-2 2h-2a2 2 0 01-2-2V7zm6 0a2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V9a2 2 0 012-2h1" />
             </svg>
-            <p>No appointments found</p>
+            <p className="text-white">No appointments found</p>
             {canWrite && (
               <button
                 onClick={() => setShowCreateForm(true)}
-                className="mt-2 text-blue-600 hover:text-blue-800"
+                className="mt-2 text-blue-400 hover:text-blue-300 transition-colors duration-200"
               >
                 Create your first appointment
               </button>

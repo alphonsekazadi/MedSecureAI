@@ -154,23 +154,23 @@ How can I help you today?`,
 
   if (!aiStatus.available) {
     return (
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+      <div className="bg-white/10 backdrop-blur-xl rounded-2xl border border-white/20 p-6">
         <div className="text-center py-8">
-          <div className="h-16 w-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
-            <svg className="h-8 w-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div className="h-16 w-16 bg-red-500/20 backdrop-blur-xl rounded-full flex items-center justify-center mx-auto mb-4 border border-red-500/30">
+            <svg className="h-8 w-8 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
           </div>
-          <h3 className="text-xl font-semibold text-gray-900 mb-2">AI Service Not Available</h3>
-          <p className="text-gray-600 mb-4">
+          <h3 className="text-xl font-semibold text-white mb-2">AI Service Not Available</h3>
+          <p className="text-white/70 mb-4">
             Please configure an AI provider in your environment variables:
           </p>
-          <div className="bg-gray-50 rounded-lg p-4 text-left text-sm font-mono">
-            <p className="mb-2">📋 <strong>Easy Setup Options:</strong></p>
-            <p className="text-blue-600 mb-1">1. <strong>Groq (FREE)</strong>: Get API key at groq.com</p>
-            <p className="text-green-600 mb-1">2. <strong>Hugging Face (FREE)</strong>: Get token at huggingface.co</p>
-            <p className="text-purple-600 mb-1">3. <strong>Cohere</strong>: Get API key at cohere.ai</p>
-            <p className="text-gray-500 mt-2">Current provider: <strong>{aiStatus.provider}</strong></p>
+          <div className="bg-black/20 backdrop-blur-xl rounded-xl border border-white/10 p-4 text-left text-sm font-mono">
+            <p className="mb-2 text-white">📋 <strong>Easy Setup Options:</strong></p>
+            <p className="text-blue-400 mb-1">1. <strong>Groq (FREE)</strong>: Get API key at groq.com</p>
+            <p className="text-green-400 mb-1">2. <strong>Hugging Face (FREE)</strong>: Get token at huggingface.co</p>
+            <p className="text-purple-400 mb-1">3. <strong>Cohere</strong>: Get API key at cohere.ai</p>
+            <p className="text-white/60 mt-2">Current provider: <strong className="text-white">{aiStatus.provider}</strong></p>
           </div>
         </div>
       </div>
@@ -178,21 +178,21 @@ How can I help you today?`,
   }
 
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-200 h-[600px] flex flex-col">
+    <div className="bg-white/10 backdrop-blur-xl rounded-2xl border border-white/20 h-[600px] flex flex-col">
       {/* Chat Header */}
-      <div className="p-4 border-b border-gray-200 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-t-xl">
+      <div className="p-4 border-b border-white/20 bg-gradient-to-r from-blue-500/20 to-indigo-500/20 backdrop-blur-xl rounded-t-2xl">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
-            <div className="h-10 w-10 bg-blue-600 rounded-full flex items-center justify-center">
-              <svg className="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="h-10 w-10 bg-blue-500/30 backdrop-blur-xl rounded-full flex items-center justify-center border border-blue-400/30">
+              <svg className="h-6 w-6 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
               </svg>
             </div>
             <div>
-              <h3 className="font-semibold text-gray-900">MedSecureAI Assistant</h3>
-              <div className="flex items-center space-x-2 text-xs text-gray-500">
+              <h3 className="font-semibold text-white">MedSecureAI Assistant</h3>
+              <div className="flex items-center space-x-2 text-xs text-white/60">
                 <div className="flex items-center space-x-1">
-                  <div className="h-2 w-2 bg-green-500 rounded-full"></div>
+                  <div className="h-2 w-2 bg-green-400 rounded-full animate-pulse"></div>
                   <span>Secure • {aiStatus.provider}</span>
                 </div>
                 <span>•</span>
@@ -202,7 +202,7 @@ How can I help you today?`,
           </div>
           <button
             onClick={clearChat}
-            className="text-gray-400 hover:text-gray-600 transition-colors duration-200"
+            className="text-white/60 hover:text-white/80 transition-colors duration-200 p-2 rounded-xl hover:bg-white/10"
             title="Clear chat"
           >
             <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -220,14 +220,14 @@ How can I help you today?`,
             className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
           >
             <div
-              className={`max-w-xs lg:max-w-md xl:max-w-lg px-4 py-2 rounded-lg ${
+              className={`max-w-xs lg:max-w-md xl:max-w-lg px-4 py-2 rounded-xl backdrop-blur-xl ${
                 message.role === 'user'
-                  ? 'bg-blue-600 text-white'
-                  : 'bg-gray-100 text-gray-900 border'
+                  ? 'bg-blue-500/30 text-white border border-blue-400/30'
+                  : 'bg-white/10 text-white border border-white/20'
               }`}
             >
               <div className="text-sm whitespace-pre-wrap">{message.content}</div>
-              <div className={`text-xs mt-1 ${message.role === 'user' ? 'text-blue-100' : 'text-gray-500'}`}>
+              <div className={`text-xs mt-1 ${message.role === 'user' ? 'text-blue-200' : 'text-white/60'}`}>
                 {formatTime(message.timestamp)}
                 {message.metadata?.encrypted && (
                   <span className="ml-2">🔒</span>
@@ -239,10 +239,10 @@ How can I help you today?`,
         
         {isLoading && (
           <div className="flex justify-start">
-            <div className="bg-gray-100 border px-4 py-2 rounded-lg max-w-xs">
+            <div className="bg-white/10 backdrop-blur-xl border border-white/20 px-4 py-2 rounded-xl max-w-xs">
               <div className="flex items-center space-x-2">
-                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600"></div>
-                <span className="text-sm text-gray-600">MedSecureAI is thinking...</span>
+                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-400"></div>
+                <span className="text-sm text-white/80">MedSecureAI is thinking...</span>
               </div>
             </div>
           </div>
@@ -252,21 +252,21 @@ How can I help you today?`,
       </div>
 
       {/* Chat Input */}
-      <div className="p-4 border-t border-gray-200">
+      <div className="p-4 border-t border-white/20">
         <div className="flex space-x-3">
           <textarea
             value={inputMessage}
             onChange={(e) => setInputMessage(e.target.value)}
             onKeyPress={handleKeyPress}
             placeholder="Ask about symptoms, health tips, or general medical questions..."
-            className="flex-1 resize-none border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="flex-1 resize-none bg-white/10 backdrop-blur-xl border border-white/20 rounded-xl px-3 py-2 text-sm text-white placeholder-white/50 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             rows={2}
             disabled={isLoading}
           />
           <button
             onClick={handleSendMessage}
             disabled={isLoading || !inputMessage.trim()}
-            className="bg-blue-600 hover:bg-blue-700 disabled:bg-gray-300 text-white px-4 py-2 rounded-lg transition-colors duration-200 flex items-center space-x-2"
+            className="bg-blue-500/30 hover:bg-blue-500/40 disabled:bg-white/10 disabled:text-white/30 text-blue-400 px-4 py-2 rounded-xl transition-colors duration-200 flex items-center space-x-2 backdrop-blur-xl border border-blue-400/30"
           >
             <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
@@ -275,8 +275,8 @@ How can I help you today?`,
           </button>
         </div>
         
-        <div className="mt-2 text-xs text-gray-500 flex items-center space-x-2">
-          <svg className="h-3 w-3 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+        <div className="mt-2 text-xs text-white/60 flex items-center space-x-2">
+          <svg className="h-3 w-3 text-green-400" fill="currentColor" viewBox="0 0 20 20">
             <path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd" />
           </svg>
           <span>Conversations are encrypted and HIPAA compliant</span>
