@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { useAuth } from '../hooks/useAuth';
 import { aiService } from '../services/aiService';
+import { medicalKnowledgeService } from '../services/medicalKnowledgeService';
 import type { ChatMessage, AIResponse } from '../services/aiService';
 
 const SecureAIChat = () => {

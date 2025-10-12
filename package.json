@@ -19,6 +19,7 @@
     "@types/react-router-dom": "^5.3.3",
     "groq-sdk": "^0.33.0",
     "langchain": "^0.3.35",
+    "lucide-react": "^0.545.0",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "react-router-dom": "^7.9.4",
