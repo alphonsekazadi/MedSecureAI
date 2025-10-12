@@ -11,42 +11,75 @@ const DoctorDashboard = () => {
   const [activeTab, setActiveTab] = useState('overview');
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Navigation Header */}
-      <nav className="bg-white shadow-sm border-b border-gray-200">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-green-50">
+      {/* Modern Navigation Header */}
+      <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-lg border-b border-green-100 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between h-16">
-            <div className="flex items-center">
-              <div className="flex-shrink-0 flex items-center">
-                <div className="h-8 w-8 bg-green-600 rounded-lg flex items-center justify-center">
-                  <svg className="h-5 w-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div className="flex justify-between items-center h-16">
+            {/* Logo */}
+            <div className="flex items-center space-x-3">
+              <div className="relative">
+                <div className="h-10 w-10 bg-gradient-to-br from-green-600 to-green-700 rounded-xl flex items-center justify-center shadow-lg">
+                  <svg className="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                   </svg>
+                  <div className="absolute -top-1 -right-1 h-3 w-3 bg-blue-400 rounded-full animate-pulse"></div>
                 </div>
-                <span className="ml-2 text-xl font-bold text-gray-900">MedSecure<span className="text-green-600">AI</span> Doctor</span>
+              </div>
+              <div className="hidden sm:block">
+                <h1 className="text-xl font-bold bg-gradient-to-r from-gray-900 to-green-800 bg-clip-text text-transparent">
+                  MedSecure<span className="text-green-600">AI</span>
+                </h1>
+                <p className="text-xs text-gray-500 font-medium">Doctor Portal</p>
               </div>
             </div>
+
+            {/* User Profile */}
             <div className="flex items-center space-x-4">
-              <div className="flex items-center space-x-2">
-                <img
-                  className="h-8 w-8 rounded-full"
-                  src={user?.picture || 'https://via.placeholder.com/32x32?text=D'}
-                  alt={user?.name || 'Doctor'}
-                />
-                <span className="text-sm font-medium text-gray-700">{user?.name || 'Doctor'}</span>
-                <span className={`px-2 py-1 text-xs rounded-full ${
-                  user?.role === 'admin' ? 'bg-purple-100 text-purple-800' :
-                  user?.role === 'doctor' ? 'bg-green-100 text-green-800' :
-                  'bg-blue-100 text-blue-800'
-                }`}>
-                  {user?.role?.toUpperCase() || 'DOCTOR'}
-                </span>
+              {/* Notifications */}
+              <button className="relative p-2 text-gray-400 hover:text-green-600 hover:bg-green-50 rounded-lg transition-all duration-200">
+                <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-3.5-7H7.5l-3.5 7H9m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                </svg>
+                <span className="absolute top-1 right-1 h-2 w-2 bg-red-500 rounded-full"></span>
+              </button>
+
+              {/* User Info */}
+              <div className="flex items-center space-x-3 bg-white/60 rounded-full px-3 py-2 shadow-sm border border-green-100">
+                <div className="relative">
+                  <img
+                    className="h-8 w-8 rounded-full ring-2 ring-green-100"
+                    src={user?.picture || 'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=32&h=32&fit=crop&crop=face&auto=format'}
+                    alt={user?.name || 'Doctor'}
+                  />
+                  <div className="absolute bottom-0 right-0 h-3 w-3 bg-green-400 rounded-full border-2 border-white"></div>
+                </div>
+                <div className="hidden sm:block text-sm">
+                  <p className="font-semibold text-gray-800">{user?.name || 'Doctor'}</p>
+                  <div className="flex items-center space-x-1">
+                    <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold ${
+                      user?.role === 'admin' ? 'bg-purple-100 text-purple-700' :
+                      user?.role === 'doctor' ? 'bg-green-100 text-green-700' :
+                      'bg-blue-100 text-blue-700'
+                    }`}>
+                      <div className={`w-1.5 h-1.5 rounded-full mr-1 ${
+                        user?.role === 'admin' ? 'bg-purple-500' :
+                        user?.role === 'doctor' ? 'bg-green-500' :
+                        'bg-blue-500'
+                      }`}></div>
+                      {user?.role?.toUpperCase() || 'DOCTOR'}
+                    </span>
+                  </div>
+                </div>
               </div>
+
+              {/* Logout */}
               <button
                 onClick={logout}
-                className="text-gray-400 hover:text-gray-600 transition-colors duration-200"
+                className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all duration-200 group"
+                title="Logout"
               >
-                <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="h-5 w-5 transform group-hover:scale-110 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
                 </svg>
               </button>
