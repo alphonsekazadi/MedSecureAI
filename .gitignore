@@ -24,3 +24,4 @@ instructions.md
 *.njsproj
 *.sln
 *.sw?
+.env
