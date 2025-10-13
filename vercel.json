@@ -10,8 +10,5 @@
       "source": "/(.*)",
       "destination": "/index.html"
     }
-  ],
-  "env": {
-    "VITE_HF_API_KEY": "@vite_hf_api_key"
-  }
+  ]
 }
