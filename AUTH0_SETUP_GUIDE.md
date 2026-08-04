@@ -1,6 +1,6 @@
-# 🔐 Auth0 Role Configuration Guide - MedSecureAI
+# Auth0 Role Configuration Guide - MedSecureAI
 
-## 🎯 Auth0 Dashboard Setup Instructions
+## Auth0 Dashboard Setup Instructions
 
 ### Step 1: Create Roles in Auth0 Dashboard
 
@@ -114,7 +114,7 @@ VITE_AUTH0_AUDIENCE=https://api.medsecureai.com
 # Make sure to enable RBAC in your Auth0 API settings
 ```
 
-## 🧪 Testing the Setup
+## Testing the Setup
 
 ### Test Users to Create:
 
@@ -133,7 +133,7 @@ VITE_AUTH0_AUDIENCE=https://api.medsecureai.com
    - Role: `Admin`
    - Expected Dashboard: Admin Dashboard
 
-## 🎯 Challenge Demo Flow
+## Challenge Demo Flow
 
 1. **Login as Patient:**
    - See limited knowledge in FGA demo
@@ -152,7 +152,7 @@ VITE_AUTH0_AUDIENCE=https://api.medsecureai.com
    - All Auth0 AI features enabled
    - System configuration access
 
-## 🔧 Troubleshooting
+## Troubleshooting
 
 ### Common Issues:
 
@@ -173,4 +173,4 @@ VITE_AUTH0_AUDIENCE=https://api.medsecureai.com
 
 ---
 
-**This professional Auth0 setup demonstrates enterprise-grade role management for the Auth0 for AI Agents Challenge! 🏆**
+**This professional Auth0 setup demonstrates enterprise-grade role management for the Auth0 for AI Agents Challenge!**
