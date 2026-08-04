@@ -25,3 +25,4 @@ instructions.md
 *.sln
 *.sw?
 .env
+.env
