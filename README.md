@@ -12,7 +12,7 @@
 
 ## What I Built - Auth0 for AI Agents Challenge
 
-I implemented all three Auth0 AI pillars in a real healthcare context:
+I implemented all three (3) Auth0 AI pillars in a real healthcare context:
 
 ## Auth0 Challenge Features
 
